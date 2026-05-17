@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PowFit Pay - Gerenciamento de Academia</title>
+    <title>PowFit Pay - Gestão de Clubes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -31,7 +31,6 @@
         }
     </script>
     <style>
-        /* Estilos adicionais e configurações de impressão */
         body { font-family: 'Inter', sans-serif; }
         
         @media print {
@@ -39,18 +38,17 @@
             .no-print { display: none !important; }
             .print-only { display: block !important; }
             .print-container { width: 100% !important; margin: 0 !important; padding: 0 !important; }
-            .dark\:bg-dark-card { background-color: white !important; border: 1px solid #ccc !important; }
-            .text-white, .dark\:text-gray-300 { color: black !important; }
+            .dark\:bg-dark-card { background-color: white !important; border: 1px solid #e5e7eb !important; }
+            .text-white, .dark\:text-gray-300, .text-gray-400 { color: black !important; }
+            .border-dark-border { border-color: #e5e7eb !important; }
             * { box-shadow: none !important; }
         }
 
-        /* Scrollbar customizada */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
-    <!-- Ícones -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-dark-bg text-gray-200 min-h-screen flex antialiased">
@@ -60,11 +58,11 @@
         <div class="bg-dark-card p-8 rounded-2xl shadow-2xl border border-dark-border max-w-md w-full text-center">
             <div class="flex justify-center mb-6">
                 <div class="w-16 h-16 bg-brand-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-600/30">
-                    <i data-lucide="dumbbell" class="text-white w-8 h-8"></i>
+                    <i data-lucide="shield-half" class="text-white w-8 h-8"></i>
                 </div>
             </div>
             <h1 class="text-3xl font-bold text-white mb-2">PowFit Pay</h1>
-            <p class="text-gray-400 mb-8">Gerenciamento financeiro inteligente para sua academia.</p>
+            <p class="text-gray-400 mb-8">Gestão Financeira para Clubes.</p>
             
             <button id="btn-google-login" class="w-full flex items-center justify-center gap-3 bg-white text-gray-900 font-semibold py-3 px-4 rounded-xl hover:bg-gray-100 transition-colors shadow-md">
                 <svg class="w-5 h-5" viewBox="0 0 24 24">
@@ -75,7 +73,6 @@
                 </svg>
                 Entrar com Google
             </button>
-
             <div id="login-loading" class="hidden mt-4 text-brand-400 text-sm">Autenticando...</div>
         </div>
     </div>
@@ -87,11 +84,11 @@
         <aside class="w-64 bg-dark-card border-r border-dark-border flex flex-col no-print fixed h-full z-40">
             <div class="p-6 border-b border-dark-border flex items-center gap-3">
                 <div class="w-10 h-10 bg-brand-600 rounded-lg flex items-center justify-center">
-                    <i data-lucide="dumbbell" class="text-white w-6 h-6"></i>
+                    <i data-lucide="shield-half" class="text-white w-6 h-6"></i>
                 </div>
                 <div>
                     <h2 class="text-xl font-bold text-white tracking-tight">PowFit</h2>
-                    <p class="text-xs text-brand-400 font-medium">PAY SYSTEM</p>
+                    <p class="text-xs text-brand-400 font-medium">CLUB SYSTEM</p>
                 </div>
             </div>
 
@@ -101,12 +98,16 @@
                     <span class="font-medium">Dashboard</span>
                 </button>
                 <button onclick="navigate('receitas')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-border rounded-xl transition-all" data-target="receitas">
-                    <i data-lucide="arrow-up-circle" class="w-5 h-5 text-emerald-400"></i>
-                    <span class="font-medium">Receitas</span>
+                    <i data-lucide="users" class="w-5 h-5 text-emerald-400"></i>
+                    <span class="font-medium">Sócios/Mensalidades</span>
+                </button>
+                <button onclick="navigate('produtos')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-border rounded-xl transition-all" data-target="produtos">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-400"></i>
+                    <span class="font-medium">Venda de Produtos</span>
                 </button>
                 <button onclick="navigate('despesas')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-border rounded-xl transition-all" data-target="despesas">
                     <i data-lucide="arrow-down-circle" class="w-5 h-5 text-rose-400"></i>
-                    <span class="font-medium">Despesas</span>
+                    <span class="font-medium">Despesas/Gastos</span>
                 </button>
                 <button onclick="navigate('relatorios')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-border rounded-xl transition-all" data-target="relatorios">
                     <i data-lucide="file-bar-chart" class="w-5 h-5"></i>
@@ -124,7 +125,6 @@
                     <div id="user-avatar-fallback" class="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center text-white font-bold">U</div>
                     <div class="overflow-hidden">
                         <p id="user-name" class="text-sm font-medium text-white truncate">Usuário</p>
-                        <p id="user-email" class="text-xs text-gray-400 truncate">Sincronizando...</p>
                     </div>
                 </div>
                 <button id="btn-logout" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-dark-border hover:bg-rose-500/20 hover:text-rose-400 text-gray-300 rounded-lg transition-colors text-sm font-medium">
@@ -134,34 +134,62 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main class="flex-1 ml-64 p-8 print-container">
+        <main class="flex-1 ml-64 p-8 print-container bg-dark-bg min-h-screen">
             
-            <header class="flex justify-between items-center mb-8 no-print">
+            <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 no-print gap-4">
                 <div>
                     <h1 id="page-title" class="text-2xl font-bold text-white">Dashboard</h1>
-                    <p id="gym-header-name" class="text-sm text-brand-400 mt-1">Academia não definida</p>
+                    <p id="club-header-name" class="text-sm text-brand-400 mt-1">Clube não definido</p>
                 </div>
-                <div id="current-date-display" class="bg-dark-card px-4 py-2 rounded-lg border border-dark-border text-sm font-medium">
-                    ...
+                
+                <div class="flex items-center gap-4 bg-dark-card p-2 rounded-xl border border-dark-border">
+                    <div class="flex items-center gap-2 px-3 border-r border-dark-border">
+                        <i data-lucide="calendar" class="w-4 h-4 text-gray-400"></i>
+                        <input type="month" id="filtro-mes" class="bg-transparent text-white font-medium focus:outline-none cursor-pointer">
+                    </div>
+                    <div class="flex items-center gap-2 px-3">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-gray-400"></i>
+                        <select id="filtro-setor-global" class="bg-transparent text-white font-medium focus:outline-none cursor-pointer">
+                            <option value="Todos">Todos os Setores</option>
+                            <!-- Preenchido via JS -->
+                        </select>
+                    </div>
                 </div>
             </header>
 
+            <!-- AVISO DE CONFIGURAÇÃO PENDENTE -->
+            <div id="aviso-config" class="hidden bg-rose-500/10 border border-rose-500/50 text-rose-400 p-4 rounded-xl mb-6 flex items-center justify-between no-print">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                    <span>Você precisa cadastrar pelo menos um <strong>Setor</strong> nas configurações antes de registrar finanças.</span>
+                </div>
+                <button onclick="navigate('configuracoes')" class="bg-rose-500 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-rose-600 transition-colors">
+                    Configurar Agora
+                </button>
+            </div>
+
             <!-- DASHBOARD SECTION -->
             <section id="sec-dashboard" class="page-section">
-                
                 <!-- Cards de Resumo -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <!-- Faturamento -->
                     <div class="bg-dark-card p-6 rounded-2xl border border-dark-border">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-gray-400 text-sm font-medium mb-1">Faturamento Bruto</p>
-                                <h3 id="dash-faturamento" class="text-2xl font-bold text-emerald-400">R$ 0,00</h3>
+                                <p class="text-gray-400 text-sm font-medium mb-1">Sócios (Receitas)</p>
+                                <h3 id="dash-faturamento-socios" class="text-2xl font-bold text-emerald-400">R$ 0,00</h3>
                             </div>
-                            <div class="p-2 bg-emerald-400/10 rounded-lg"><i data-lucide="trending-up" class="w-5 h-5 text-emerald-400"></i></div>
+                            <div class="p-2 bg-emerald-400/10 rounded-lg"><i data-lucide="users" class="w-5 h-5 text-emerald-400"></i></div>
                         </div>
                     </div>
-                    <!-- Despesas -->
+                    <div class="bg-dark-card p-6 rounded-2xl border border-dark-border">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-gray-400 text-sm font-medium mb-1">Venda Produtos</p>
+                                <h3 id="dash-faturamento-produtos" class="text-2xl font-bold text-indigo-400">R$ 0,00</h3>
+                            </div>
+                            <div class="p-2 bg-indigo-400/10 rounded-lg"><i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-400"></i></div>
+                        </div>
+                    </div>
                     <div class="bg-dark-card p-6 rounded-2xl border border-dark-border">
                         <div class="flex justify-between items-start">
                             <div>
@@ -171,24 +199,13 @@
                             <div class="p-2 bg-rose-400/10 rounded-lg"><i data-lucide="trending-down" class="w-5 h-5 text-rose-400"></i></div>
                         </div>
                     </div>
-                    <!-- Sobra / Lucro -->
                     <div class="bg-dark-card p-6 rounded-2xl border border-brand-500/30 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-gray-400 text-sm font-medium mb-1">Lucro Líquido (Sobra)</p>
+                                <p class="text-gray-400 text-sm font-medium mb-1">Lucro Líquido</p>
                                 <h3 id="dash-lucro" class="text-2xl font-bold text-brand-400">R$ 0,00</h3>
                             </div>
                             <div class="p-2 bg-brand-500/10 rounded-lg"><i data-lucide="wallet" class="w-5 h-5 text-brand-400"></i></div>
-                        </div>
-                    </div>
-                    <!-- Margem -->
-                    <div class="bg-dark-card p-6 rounded-2xl border border-dark-border">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-gray-400 text-sm font-medium mb-1">Margem de Lucro</p>
-                                <h3 id="dash-margem" class="text-2xl font-bold text-white">0%</h3>
-                            </div>
-                            <div class="p-2 bg-gray-700/50 rounded-lg"><i data-lucide="pie-chart" class="w-5 h-5 text-gray-300"></i></div>
                         </div>
                     </div>
                 </div>
@@ -196,7 +213,7 @@
                 <!-- Divisão de Sócios -->
                 <div class="bg-gradient-to-r from-dark-card to-brand-950/20 p-6 rounded-2xl border border-dark-border mb-8">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="users" class="w-5 h-5 text-brand-400"></i> Pró-labore / Divisão Sócios (50/50)
+                        <i data-lucide="pie-chart" class="w-5 h-5 text-brand-400"></i> Pró-labore Sócios do Clube (50/50)
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-dark-bg p-4 rounded-xl border border-dark-border flex items-center justify-between">
@@ -208,65 +225,45 @@
                             <span id="dash-socio2" class="text-xl font-bold text-white">R$ 0,00</span>
                         </div>
                     </div>
-                    <p class="text-xs text-gray-500 mt-3">* A divisão é calculada com base no Lucro Líquido do mês atual.</p>
                 </div>
 
-                <!-- Resumo Rápido Tabelas -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
-                        <h3 class="text-lg font-bold text-white mb-4">Últimas Receitas</h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left">
-                                <thead class="text-xs text-gray-400 uppercase bg-dark-bg rounded-lg">
-                                    <tr>
-                                        <th class="px-4 py-3 rounded-l-lg">Associado</th>
-                                        <th class="px-4 py-3">Pacote</th>
-                                        <th class="px-4 py-3 rounded-r-lg text-right">Valor</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="dash-table-receitas" class="divide-y divide-dark-border">
-                                    <!-- Preenchido via JS -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
-                        <h3 class="text-lg font-bold text-white mb-4">Últimos Gastos</h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left">
-                                <thead class="text-xs text-gray-400 uppercase bg-dark-bg rounded-lg">
-                                    <tr>
-                                        <th class="px-4 py-3 rounded-l-lg">Descrição</th>
-                                        <th class="px-4 py-3">Categoria</th>
-                                        <th class="px-4 py-3 rounded-r-lg text-right">Valor</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="dash-table-despesas" class="divide-y divide-dark-border">
-                                    <!-- Preenchido via JS -->
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
+                    <h3 class="text-lg font-bold text-white mb-4">Transações Recentes</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs text-gray-400 uppercase bg-dark-bg rounded-lg">
+                                <tr>
+                                    <th class="px-4 py-3 rounded-l-lg">Tipo</th>
+                                    <th class="px-4 py-3">Descrição</th>
+                                    <th class="px-4 py-3">Categoria</th>
+                                    <th class="px-4 py-3">Setor</th>
+                                    <th class="px-4 py-3 rounded-r-lg text-right">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dash-table-recentes" class="divide-y divide-dark-border">
+                                <!-- Preenchido via JS -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
 
-            <!-- RECEITAS SECTION -->
+            <!-- RECEITAS (SÓCIOS) SECTION -->
             <section id="sec-receitas" class="page-section hidden">
                 <div class="bg-dark-card rounded-2xl border border-dark-border p-6 mb-8">
-                    <h3 class="text-lg font-bold text-white mb-4">Anotar Mensalidade / Diária</h3>
-                    <form id="form-receita" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                    <h3 class="text-lg font-bold text-white mb-4">Registrar Pagamento de Sócio/Mensalidade</h3>
+                    <form id="form-receita" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
                         <div class="lg:col-span-2">
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Nome do Associado(a)</label>
-                            <input type="text" id="rec-nome" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none placeholder-gray-600" placeholder="Ex: João Silva">
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Nome do Sócio</label>
+                            <input type="text" id="rec-nome" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Ex: João Silva">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria / Pacote</label>
-                            <select id="rec-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none">
-                                <option value="Associado 3 meses">3 Meses</option>
-                                <option value="Associado 1 mês">1 Mês</option>
-                                <option value="Temporário (Diária)">Diária</option>
-                                <option value="Outros">Outros</option>
-                            </select>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Setor</label>
+                            <select id="rec-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria/Pacote</label>
+                            <select id="rec-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Valor (R$)</label>
@@ -280,24 +277,56 @@
                     </form>
                 </div>
 
+                <!-- Tabela genérica para transações da aba -->
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border flex justify-between items-center">
-                        <h3 class="font-bold text-white">Histórico de Receitas (Este Mês)</h3>
-                    </div>
+                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Mensalidades do Mês</h3></div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead class="text-xs text-gray-400 uppercase bg-dark-bg">
-                                <tr>
-                                    <th class="px-6 py-4">Data</th>
-                                    <th class="px-6 py-4">Associado</th>
-                                    <th class="px-6 py-4">Pacote</th>
-                                    <th class="px-6 py-4 text-right">Valor</th>
-                                    <th class="px-6 py-4 text-center">Ação</th>
-                                </tr>
+                                <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Sócio</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Pacote</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ação</th></tr>
                             </thead>
-                            <tbody id="lista-receitas" class="divide-y divide-dark-border">
-                                <!-- Preenchido via JS -->
-                            </tbody>
+                            <tbody id="lista-receitas" class="divide-y divide-dark-border"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRODUTOS SECTION -->
+            <section id="sec-produtos" class="page-section hidden">
+                <div class="bg-dark-card rounded-2xl border border-dark-border p-6 mb-8">
+                    <h3 class="text-lg font-bold text-white mb-4">Registrar Venda de Produto</h3>
+                    <form id="form-produto" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Descrição do Produto</label>
+                            <input type="text" id="prod-nome" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Ex: Camiseta Fitness M">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Setor</label>
+                            <select id="prod-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria</label>
+                            <select id="prod-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Valor Total (R$)</label>
+                            <input type="number" id="prod-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="0.00">
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Adicionar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
+                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Vendas do Mês</h3></div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs text-gray-400 uppercase bg-dark-bg">
+                                <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Produto</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ação</th></tr>
+                            </thead>
+                            <tbody id="lista-produtos" class="divide-y divide-dark-border"></tbody>
                         </table>
                     </div>
                 </div>
@@ -306,22 +335,19 @@
             <!-- DESPESAS SECTION -->
             <section id="sec-despesas" class="page-section hidden">
                 <div class="bg-dark-card rounded-2xl border border-dark-border p-6 mb-8">
-                    <h3 class="text-lg font-bold text-white mb-4">Anotar Gastos</h3>
-                    <form id="form-despesa" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                    <h3 class="text-lg font-bold text-white mb-4">Registrar Gastos/Despesas</h3>
+                    <form id="form-despesa" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
                         <div class="lg:col-span-2">
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Descrição do Gasto</label>
-                            <input type="text" id="desp-desc" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none placeholder-gray-600" placeholder="Ex: Conta de Luz ref. Maio">
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Descrição</label>
+                            <input type="text" id="desp-desc" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Ex: Conta de Energia">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Setor</label>
+                            <select id="desp-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Categoria</label>
-                            <select id="desp-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none">
-                                <option value="Limpeza">Limpeza</option>
-                                <option value="Colchão">Colchão/Equipamentos</option>
-                                <option value="Consultor RT">Consultor RT</option>
-                                <option value="Energia">Energia</option>
-                                <option value="Internet">Internet</option>
-                                <option value="Outros">Outros</option>
-                            </select>
+                            <select id="desp-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Valor (R$)</label>
@@ -334,25 +360,14 @@
                         </div>
                     </form>
                 </div>
-
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border flex justify-between items-center">
-                        <h3 class="font-bold text-white">Histórico de Gastos (Este Mês)</h3>
-                    </div>
+                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Gastos do Mês</h3></div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead class="text-xs text-gray-400 uppercase bg-dark-bg">
-                                <tr>
-                                    <th class="px-6 py-4">Data</th>
-                                    <th class="px-6 py-4">Descrição</th>
-                                    <th class="px-6 py-4">Categoria</th>
-                                    <th class="px-6 py-4 text-right">Valor</th>
-                                    <th class="px-6 py-4 text-center">Ação</th>
-                                </tr>
+                                <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Descrição</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ação</th></tr>
                             </thead>
-                            <tbody id="lista-despesas" class="divide-y divide-dark-border">
-                                <!-- Preenchido via JS -->
-                            </tbody>
+                            <tbody id="lista-despesas" class="divide-y divide-dark-border"></tbody>
                         </table>
                     </div>
                 </div>
@@ -360,120 +375,166 @@
 
             <!-- RELATÓRIOS SECTION -->
             <section id="sec-relatorios" class="page-section hidden">
-                
-                <div class="flex justify-between items-center mb-6 no-print">
-                    <div class="flex gap-4 items-center">
-                        <label class="text-gray-400 text-sm">Mês de Referência:</label>
-                        <input type="month" id="filtro-mes" class="bg-dark-bg border border-dark-border text-white rounded-lg px-3 py-1.5 focus:outline-none">
-                    </div>
-                    <button onclick="window.print()" class="bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                        <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Relatório
+                <div class="flex justify-end mb-6 no-print">
+                    <button onclick="window.print()" class="bg-brand-600 hover:bg-brand-500 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors font-medium">
+                        <i data-lucide="printer" class="w-5 h-5"></i> Imprimir Relatório
                     </button>
                 </div>
 
-                <div class="bg-dark-card rounded-2xl border border-dark-border p-8 print:border-none print:shadow-none mb-8" id="print-area">
+                <div class="bg-dark-card rounded-2xl border border-dark-border p-8 print:border-none print:shadow-none print:bg-white" id="print-area">
                     
-                    <div class="text-center mb-8 border-b border-dark-border pb-6">
-                        <h2 id="rel-gym-name" class="text-2xl font-bold text-white print:text-black">NOME DA ACADEMIA</h2>
-                        <p id="rel-gym-cnpj" class="text-gray-400 print:text-gray-700">CNPJ: 00.000.000/0000-00</p>
-                        <h3 class="text-lg font-semibold text-brand-400 mt-4 print:text-black">Relatório Mensal de Faturamento - <span id="rel-mes-texto"></span></h3>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-8 mb-8">
-                        <div>
-                            <h4 class="font-bold text-gray-300 print:text-black mb-3 border-b border-dark-border pb-2">Resumo de Receitas</h4>
-                            <ul id="rel-resumo-receitas" class="space-y-2 text-sm text-gray-400 print:text-gray-800">
-                                <!-- Preenchido via JS -->
-                            </ul>
-                            <div class="mt-4 pt-2 border-t border-dark-border flex justify-between font-bold text-emerald-400 print:text-black">
-                                <span>Total Receitas:</span>
-                                <span id="rel-total-receitas">R$ 0,00</span>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-300 print:text-black mb-3 border-b border-dark-border pb-2">Resumo de Gastos</h4>
-                            <ul id="rel-resumo-despesas" class="space-y-2 text-sm text-gray-400 print:text-gray-800">
-                                <!-- Preenchido via JS -->
-                            </ul>
-                            <div class="mt-4 pt-2 border-t border-dark-border flex justify-between font-bold text-rose-400 print:text-black">
-                                <span>Total Gastos:</span>
-                                <span id="rel-total-despesas">R$ 0,00</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-dark-bg print:bg-white border border-dark-border p-6 rounded-xl">
-                        <h4 class="text-lg font-bold text-white print:text-black mb-4 text-center">Resultado Final</h4>
+                    <div class="text-center mb-8 border-b border-dark-border print:border-gray-300 pb-6">
+                        <h2 id="rel-club-name" class="text-3xl font-bold text-white print:text-black uppercase">NOME DO CLUBE</h2>
+                        <p id="rel-club-cnpj" class="text-gray-400 print:text-gray-600 mt-1">CNPJ: 00.000.000/0000-00</p>
                         
-                        <div class="flex justify-between items-center mb-2 text-gray-300 print:text-black">
-                            <span>Faturamento Bruto:</span>
-                            <span id="rel-fim-fat">R$ 0,00</span>
+                        <div class="inline-block mt-4 px-6 py-2 bg-dark-bg print:bg-gray-100 border border-dark-border print:border-gray-300 rounded-xl">
+                            <h3 class="text-lg font-semibold text-brand-400 print:text-black">
+                                Relatório Financeiro: <span id="rel-mes-texto" class="text-white print:text-black font-bold"></span>
+                            </h3>
+                            <p class="text-sm text-gray-400 print:text-gray-700 mt-1">
+                                Setor Selecionado: <strong id="rel-setor-texto" class="text-white print:text-black">Todos</strong>
+                            </p>
                         </div>
-                        <div class="flex justify-between items-center mb-2 text-gray-300 print:text-black">
-                            <span>(-) Custos Totais:</span>
-                            <span id="rel-fim-custos">R$ 0,00</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                        <!-- Sócios -->
+                        <div>
+                            <h4 class="font-bold text-emerald-400 print:text-black mb-3 border-b border-dark-border print:border-gray-300 pb-2 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Receitas de Sócios</h4>
+                            <ul id="rel-resumo-receitas" class="space-y-2 text-sm text-gray-400 print:text-gray-700 mb-4"></ul>
+                            <div class="pt-2 border-t border-dark-border print:border-gray-300 flex justify-between font-bold text-white print:text-black">
+                                <span>Total Sócios:</span><span id="rel-total-receitas" class="text-emerald-400 print:text-black">R$ 0,00</span>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center mb-4 text-brand-400 font-bold text-xl print:text-black border-b border-dark-border pb-4">
-                            <span>(=) Lucro Líquido (Sobra):</span>
+                        <!-- Produtos -->
+                        <div>
+                            <h4 class="font-bold text-indigo-400 print:text-black mb-3 border-b border-dark-border print:border-gray-300 pb-2 flex items-center gap-2"><i data-lucide="shopping-bag" class="w-4 h-4"></i> Venda de Produtos</h4>
+                            <ul id="rel-resumo-produtos" class="space-y-2 text-sm text-gray-400 print:text-gray-700 mb-4"></ul>
+                            <div class="pt-2 border-t border-dark-border print:border-gray-300 flex justify-between font-bold text-white print:text-black">
+                                <span>Total Produtos:</span><span id="rel-total-produtos" class="text-indigo-400 print:text-black">R$ 0,00</span>
+                            </div>
+                        </div>
+                        <!-- Despesas -->
+                        <div>
+                            <h4 class="font-bold text-rose-400 print:text-black mb-3 border-b border-dark-border print:border-gray-300 pb-2 flex items-center gap-2"><i data-lucide="trending-down" class="w-4 h-4"></i> Despesas</h4>
+                            <ul id="rel-resumo-despesas" class="space-y-2 text-sm text-gray-400 print:text-gray-700 mb-4"></ul>
+                            <div class="pt-2 border-t border-dark-border print:border-gray-300 flex justify-between font-bold text-white print:text-black">
+                                <span>Total Gastos:</span><span id="rel-total-despesas" class="text-rose-400 print:text-black">R$ 0,00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resultado Final -->
+                    <div class="bg-dark-bg print:bg-white border border-dark-border print:border-gray-300 p-6 rounded-xl max-w-2xl mx-auto">
+                        <h4 class="text-xl font-bold text-white print:text-black mb-6 text-center uppercase tracking-wider">Fechamento do Período</h4>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between items-center text-gray-300 print:text-gray-800">
+                                <span>(+) Receitas de Sócios:</span><span id="rel-fim-socios" class="font-medium">R$ 0,00</span>
+                            </div>
+                            <div class="flex justify-between items-center text-gray-300 print:text-gray-800">
+                                <span>(+) Venda de Produtos:</span><span id="rel-fim-prod" class="font-medium">R$ 0,00</span>
+                            </div>
+                            <div class="flex justify-between items-center text-gray-300 print:text-gray-800 font-bold border-t border-dark-border print:border-gray-200 pt-2">
+                                <span>(=) Faturamento Bruto Total:</span><span id="rel-fim-fat" class="text-white print:text-black">R$ 0,00</span>
+                            </div>
+                            <div class="flex justify-between items-center text-gray-300 print:text-gray-800 text-rose-400 print:text-red-600">
+                                <span>(-) Custos Totais (Despesas):</span><span id="rel-fim-custos" class="font-medium">R$ 0,00</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-6 text-brand-400 print:text-black font-bold text-2xl border-y border-dark-border print:border-gray-400 py-4">
+                            <span>(=) Lucro Líquido Final:</span>
                             <span id="rel-fim-lucro">R$ 0,00</span>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4 mt-4">
-                            <div class="bg-dark-card print:bg-gray-100 p-4 rounded-lg text-center">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-dark-card print:bg-gray-100 p-4 rounded-lg text-center border border-dark-border print:border-gray-300">
                                 <p class="text-sm text-gray-400 print:text-gray-600 mb-1">Pró-labore Sócio 1 (50%)</p>
-                                <p id="rel-socio1" class="font-bold text-white print:text-black text-lg">R$ 0,00</p>
+                                <p id="rel-socio1" class="font-bold text-white print:text-black text-xl">R$ 0,00</p>
                             </div>
-                            <div class="bg-dark-card print:bg-gray-100 p-4 rounded-lg text-center">
+                            <div class="bg-dark-card print:bg-gray-100 p-4 rounded-lg text-center border border-dark-border print:border-gray-300">
                                 <p class="text-sm text-gray-400 print:text-gray-600 mb-1">Pró-labore Sócio 2 (50%)</p>
-                                <p id="rel-socio2" class="font-bold text-white print:text-black text-lg">R$ 0,00</p>
+                                <p id="rel-socio2" class="font-bold text-white print:text-black text-xl">R$ 0,00</p>
                             </div>
-                        </div>
-                        <div class="mt-4 text-center">
-                            <span class="text-sm text-gray-400 print:text-gray-600">Margem de Lucro: <strong id="rel-margem" class="text-white print:text-black">0%</strong></span>
                         </div>
                     </div>
-
                 </div>
             </section>
 
             <!-- CONFIGURAÇÕES SECTION -->
             <section id="sec-configuracoes" class="page-section hidden no-print">
-                <div class="max-w-2xl bg-dark-card rounded-2xl border border-dark-border p-8">
-                    <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                        <i data-lucide="building-2" class="w-6 h-6 text-brand-400"></i> Dados da Academia
-                    </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     
-                    <form id="form-config" class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-2">Nome da Academia</label>
-                            <input type="text" id="conf-nome" class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Ex: PowFit Centro de Treinamento">
+                    <!-- Dados do Clube -->
+                    <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="building" class="w-5 h-5 text-brand-400"></i> Dados do Clube</h3>
+                        <div class="space-y-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-1">Nome do Clube</label>
+                                <input type="text" id="conf-nome" class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-brand-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-1">CNPJ</label>
+                                <input type="text" id="conf-cnpj" class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-brand-500 focus:outline-none">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-2">CNPJ</label>
-                            <input type="text" id="conf-cnpj" class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="00.000.000/0000-00">
+                        <button onclick="salvarConfigGeral()" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-2 rounded-lg transition-colors">Salvar Dados</button>
+                    </div>
+
+                    <!-- Setores -->
+                    <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5 text-amber-400"></i> Gerenciar Setores</h3>
+                        <p class="text-sm text-gray-400 mb-4">Adicione os setores ou unidades do seu clube. (Obrigatório para registrar transações).</p>
+                        <div class="flex gap-2 mb-4">
+                            <input type="text" id="novo-setor" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Sede Principal, Bairro X">
+                            <button onclick="addConfigItem('sectors', 'novo-setor')" class="bg-amber-500 text-white px-4 rounded-lg hover:bg-amber-600 font-bold">+</button>
                         </div>
-                        <div class="pt-4 border-t border-dark-border">
-                            <button type="submit" class="w-full md:w-auto bg-brand-600 hover:bg-brand-500 text-white font-medium py-3 px-8 rounded-xl transition-colors shadow-lg shadow-brand-600/20">
-                                Salvar Configurações
-                            </button>
-                            <span id="config-save-msg" class="ml-4 text-emerald-400 text-sm hidden">Salvo com sucesso!</span>
+                        <ul id="lista-conf-setores" class="space-y-2 max-h-40 overflow-y-auto"></ul>
+                    </div>
+
+                    <!-- Categorias Sócios -->
+                    <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="users" class="w-5 h-5 text-emerald-400"></i> Categorias: Sócios/Mensalidades</h3>
+                        <div class="flex gap-2 mb-4">
+                            <input type="text" id="nova-cat-rec" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Pacote Trimestral, Diária">
+                            <button onclick="addConfigItem('catIncome', 'nova-cat-rec')" class="bg-emerald-500 text-white px-4 rounded-lg hover:bg-emerald-600 font-bold">+</button>
                         </div>
-                    </form>
+                        <ul id="lista-conf-rec" class="space-y-2 max-h-40 overflow-y-auto"></ul>
+                    </div>
+
+                    <!-- Categorias Produtos -->
+                    <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-400"></i> Categorias: Produtos</h3>
+                        <div class="flex gap-2 mb-4">
+                            <input type="text" id="nova-cat-prod" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Suplementos, Roupas">
+                            <button onclick="addConfigItem('catProduct', 'nova-cat-prod')" class="bg-indigo-500 text-white px-4 rounded-lg hover:bg-indigo-600 font-bold">+</button>
+                        </div>
+                        <ul id="lista-conf-prod" class="space-y-2 max-h-40 overflow-y-auto"></ul>
+                    </div>
+
+                    <!-- Categorias Despesas -->
+                    <div class="bg-dark-card rounded-2xl border border-dark-border p-6 md:col-span-2">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="trending-down" class="w-5 h-5 text-rose-400"></i> Categorias: Despesas</h3>
+                        <div class="flex gap-2 mb-4 max-w-md">
+                            <input type="text" id="nova-cat-desp" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Manutenção, Limpeza">
+                            <button onclick="addConfigItem('catExpense', 'nova-cat-desp')" class="bg-rose-500 text-white px-4 rounded-lg hover:bg-rose-600 font-bold">+</button>
+                        </div>
+                        <ul id="lista-conf-desp" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-40 overflow-y-auto"></ul>
+                    </div>
+
                 </div>
             </section>
 
         </main>
     </div>
 
-    <!-- Scripts e Lógica (Firebase + App) -->
+    <!-- Scripts (Firebase + Lógica do App) -->
     <script type="module">
-        // Importações do Firebase SDK v11
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, addDoc, deleteDoc, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, addDoc, deleteDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Configuração do Firebase
-        // Prioriza a configuração injetada pelo ambiente (se existir), caso contrário usa a fornecida.
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
             apiKey: "AIzaSyDOGZGAKNvAUiD7BfETTTXJz-aQ54AAweM",
             authDomain: "pow-fit-pay.firebaseapp.com",
@@ -482,411 +543,354 @@
             messagingSenderId: "899659807167",
             appId: "1:899659807167:web:b8ca11726bff6cbcd6090a"
         };
-
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'pow-fit-pay';
 
-        // Inicializa Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Estado Global da Aplicação
         let currentUser = null;
         let transactions = [];
-        let gymSettings = { name: 'Nome da Academia', cnpj: '' };
+        
+        // Estado inicial de configurações (listas vazias para forçar o usuário a criar)
+        let appSettings = { 
+            name: 'Nome do Clube', 
+            cnpj: '',
+            sectors: [],
+            catIncome: ['Mensalidade 1 Mês', 'Diária'],
+            catProduct: ['Roupas', 'Suplementos'],
+            catExpense: ['Limpeza', 'Energia']
+        };
+
         let unsubTransactions = null;
         let unsubSettings = null;
-        let currentMonthFilter = new Date().toISOString().slice(0, 7); // YYYY-MM
-
-        // Elementos da UI
-        const loginScreen = document.getElementById('login-screen');
-        const appContainer = document.getElementById('app-container');
-        const loginLoading = document.getElementById('login-loading');
         
-        // Formatar Moeda
-        const formatMoney = (value) => {
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
-        };
-        // Formatar Data
-        const formatDate = (dateStr) => {
-            const [y, m, d] = dateStr.split('-');
-            return `${d}/${m}/${y}`;
-        };
+        // Filtros Globais
+        let currentMonthFilter = new Date().toISOString().slice(0, 7);
+        let currentSectorFilter = 'Todos';
 
-        // Inicializa Lucide Icons
+        const formatMoney = (val) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
+        const formatDate = (dateStr) => { const [y, m, d] = dateStr.split('-'); return `${d}/${m}/${y}`; };
+
         lucide.createIcons();
 
-        // Data Atual no Header
-        document.getElementById('current-date-display').textContent = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'full' }).format(new Date());
+        // Inicialização de UI
         document.getElementById('filtro-mes').value = currentMonthFilter;
-        document.getElementById('filtro-mes').addEventListener('change', (e) => {
-            currentMonthFilter = e.target.value;
-            updateDashboard();
-        });
+        document.getElementById('filtro-mes').addEventListener('change', (e) => { currentMonthFilter = e.target.value; updateUI(); });
+        document.getElementById('filtro-setor-global').addEventListener('change', (e) => { currentSectorFilter = e.target.value; updateUI(); });
 
-        // -------------------------
-        // SISTEMA DE NAVEGAÇÃO
-        // -------------------------
         window.navigate = (targetId) => {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(`sec-${targetId}`).classList.remove('hidden');
             
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 if(btn.dataset.target === targetId) {
-                    btn.classList.add('bg-dark-border', 'text-white');
-                    btn.classList.remove('text-gray-400');
+                    btn.classList.add('bg-dark-border', 'text-white'); btn.classList.remove('text-gray-400');
                 } else {
-                    btn.classList.remove('bg-dark-border', 'text-white');
-                    btn.classList.add('text-gray-400');
+                    btn.classList.remove('bg-dark-border', 'text-white'); btn.classList.add('text-gray-400');
                 }
             });
 
-            const titles = {
-                'dashboard': 'Dashboard Geral',
-                'receitas': 'Gerenciar Receitas',
-                'despesas': 'Gerenciar Despesas',
-                'relatorios': 'Relatório Financeiro',
-                'configuracoes': 'Configurações'
-            };
+            const titles = { 'dashboard': 'Dashboard', 'receitas': 'Sócios / Mensalidades', 'produtos': 'Venda de Produtos', 'despesas': 'Despesas / Gastos', 'relatorios': 'Relatórios', 'configuracoes': 'Configurações do Clube' };
             document.getElementById('page-title').textContent = titles[targetId];
-            
-            // Re-renderizar dependendo da aba
-            updateDashboard();
         };
 
-        // -------------------------
-        // AUTENTICAÇÃO E INICIALIZAÇÃO (Regra 3 do Firebase)
-        // -------------------------
+        // --- AUTH ---
         const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Erro na autenticação inicial:", error);
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                await signInAnonymously(auth);
             }
         };
 
-        // Login com Google Acionado pelo usuário
         document.getElementById('btn-google-login').addEventListener('click', async () => {
             const provider = new GoogleAuthProvider();
             try {
-                loginLoading.classList.remove('hidden');
+                document.getElementById('login-loading').classList.remove('hidden');
                 await signInWithPopup(auth, provider);
-            } catch (error) {
-                console.error("Erro no login com Google:", error);
-                alert("Erro ao fazer login com o Google.");
-            } finally {
-                loginLoading.classList.add('hidden');
-            }
+            } catch (error) { console.error("Login erro:", error); } 
+            finally { document.getElementById('login-loading').classList.add('hidden'); }
         });
 
-        document.getElementById('btn-logout').addEventListener('click', async () => {
-            await signOut(auth);
-            window.location.reload();
-        });
+        document.getElementById('btn-logout').addEventListener('click', async () => { await signOut(auth); window.location.reload(); });
 
-        // Listener de Estado de Autenticação
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
-                
-                // Atualiza UI de Perfil
-                if(user.isAnonymous) {
-                    document.getElementById('user-name').textContent = "Usuário Anônimo";
-                    document.getElementById('user-email').textContent = "Dados locais temporários";
-                    // Se for anônimo, continua mostrando a tela de login para forçar o Google (ou oculta se quisermos usar anon)
-                    // Para cumprir o prompt, se for anônimo num ambiente normal, mostramos a tela para forçar o Google.
-                    // Em canvas, podemos liberar.
-                } else {
+                if(!user.isAnonymous) {
                     document.getElementById('user-name').textContent = user.displayName || "Usuário";
-                    document.getElementById('user-email').textContent = user.email || "";
                     if(user.photoURL) {
                         const img = document.getElementById('user-avatar');
-                        img.src = user.photoURL;
-                        img.classList.remove('hidden');
+                        img.src = user.photoURL; img.classList.remove('hidden');
                         document.getElementById('user-avatar-fallback').classList.add('hidden');
                     }
-                    // Esconde tela de login e mostra app
-                    loginScreen.classList.add('opacity-0', 'pointer-events-none');
-                    setTimeout(() => loginScreen.classList.add('hidden'), 300);
-                    appContainer.classList.remove('hidden');
+                    const ls = document.getElementById('login-screen');
+                    ls.classList.add('opacity-0', 'pointer-events-none');
+                    setTimeout(() => ls.classList.add('hidden'), 300);
+                    document.getElementById('app-container').classList.remove('hidden');
                 }
-
-                // Inicia escuta de dados APÓS auth
                 loadUserData();
             } else {
                 currentUser = null;
-                loginScreen.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
-                appContainer.classList.add('hidden');
+                document.getElementById('login-screen').classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+                document.getElementById('app-container').classList.add('hidden');
             }
         });
 
-        // Chamada inicial obrigatória
         initAuth();
 
-        // -------------------------
-        // CARREGAMENTO DE DADOS (FIRESTORE)
-        // -------------------------
+        // --- DADOS FIRESTORE ---
         const loadUserData = () => {
             if (!currentUser) return;
-            
             const uid = currentUser.uid;
             
-            // Limpa listeners antigos
             if (unsubTransactions) unsubTransactions();
             if (unsubSettings) unsubSettings();
 
-            // Referências seguindo a Regra 1: strict paths
             const transRef = collection(db, 'artifacts', appId, 'users', uid, 'transactions');
             const settingsRef = doc(db, 'artifacts', appId, 'users', uid, 'settings', 'geral');
 
-            // Escuta Configurações
             unsubSettings = onSnapshot(settingsRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    gymSettings = docSnap.data();
-                    atualizarTextosAcademia();
-                }
-            }, (error) => console.error("Erro config:", error));
+                if (docSnap.exists()) { appSettings = { ...appSettings, ...docSnap.data() }; }
+                applySettingsToUI();
+            }, (err) => console.error(err));
 
-            // Escuta Transações (Regra 2: sem queries complexas, traz tudo e filtra no JS)
             unsubTransactions = onSnapshot(transRef, (snapshot) => {
                 transactions = [];
-                snapshot.forEach(doc => {
-                    transactions.push({ id: doc.id, ...doc.data() });
-                });
-                // Ordenar por data mais recente
+                snapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
                 transactions.sort((a, b) => new Date(b.date) - new Date(a.date) || b.timestamp - a.timestamp);
-                updateDashboard();
-            }, (error) => console.error("Erro transactions:", error));
+                updateUI();
+            }, (err) => console.error(err));
         };
 
-        const atualizarTextosAcademia = () => {
-            const nome = gymSettings.name || 'Academia não definida';
-            const cnpj = gymSettings.cnpj || '';
+        const applySettingsToUI = () => {
+            // Textos
+            document.getElementById('club-header-name').textContent = appSettings.name;
+            document.getElementById('rel-club-name').textContent = appSettings.name;
+            document.getElementById('rel-club-cnpj').textContent = appSettings.cnpj ? `CNPJ: ${appSettings.cnpj}` : '';
+            document.getElementById('conf-nome').value = appSettings.name || '';
+            document.getElementById('conf-cnpj').value = appSettings.cnpj || '';
+
+            // Aviso Setores
+            const aviso = document.getElementById('aviso-config');
+            if(!appSettings.sectors || appSettings.sectors.length === 0) {
+                aviso.classList.remove('hidden');
+            } else {
+                aviso.classList.add('hidden');
+            }
+
+            // Atualiza Selects UI
+            updateSelectOptions('filtro-setor-global', ['Todos', ...(appSettings.sectors || [])]);
             
-            document.getElementById('gym-header-name').textContent = nome;
-            document.getElementById('rel-gym-name').textContent = nome;
-            document.getElementById('rel-gym-cnpj').textContent = cnpj ? `CNPJ: ${cnpj}` : '';
-            
-            document.getElementById('conf-nome').value = gymSettings.name || '';
-            document.getElementById('conf-cnpj').value = gymSettings.cnpj || '';
+            updateSelectOptions('rec-setor', appSettings.sectors || []);
+            updateSelectOptions('prod-setor', appSettings.sectors || []);
+            updateSelectOptions('desp-setor', appSettings.sectors || []);
+
+            updateSelectOptions('rec-categoria', appSettings.catIncome || []);
+            updateSelectOptions('prod-categoria', appSettings.catProduct || []);
+            updateSelectOptions('desp-categoria', appSettings.catExpense || []);
+
+            // Mantém a seleção global anterior se existir
+            document.getElementById('filtro-setor-global').value = currentSectorFilter;
+
+            renderConfigLists();
+            updateUI(); // Força update pra refletir dados se mudou config
         };
 
-        // -------------------------
-        // LÓGICA DE NEGÓCIO E RENDERIZAÇÃO
-        // -------------------------
-        
-        // Filtra transações pelo mês selecionado
-        const getTransacoesDoMes = () => {
-            return transactions.filter(t => t.date.startsWith(currentMonthFilter));
+        const updateSelectOptions = (elementId, optionsArray) => {
+            const el = document.getElementById(elementId);
+            const val = el.value; // guarda valor antigo
+            el.innerHTML = optionsArray.length === 0 ? '<option value="" disabled selected>Nenhuma opção cadastrada</option>' : '';
+            optionsArray.forEach(opt => {
+                if(opt === 'Todos') {
+                    el.innerHTML += `<option value="${opt}">Todos os Setores</option>`;
+                } else {
+                    el.innerHTML += `<option value="${opt}">${opt}</option>`;
+                }
+            });
+            if(optionsArray.includes(val)) el.value = val;
         };
 
-        const updateDashboard = () => {
-            const currentTx = getTransacoesDoMes();
-            
-            let totalReceitas = 0;
-            let totalDespesas = 0;
-            
-            const receitasPorCat = {};
-            const despesasPorCat = {};
+        // --- RENDERIZAÇÃO DASHBOARD & RELATÓRIOS ---
+        const updateUI = () => {
+            // Filtro duplo: Mês e Setor
+            const txFiltradas = transactions.filter(t => {
+                const matchMonth = t.date.startsWith(currentMonthFilter);
+                const matchSector = currentSectorFilter === 'Todos' || t.sector === currentSectorFilter;
+                return matchMonth && matchSector;
+            });
 
-            const listasReceitasHTML = [];
-            const listasDespesasHTML = [];
+            let totRec = 0, totProd = 0, totDesp = 0;
+            const resRec = {}, resProd = {}, resDesp = {};
+            const htmlRec = [], htmlProd = [], htmlDesp = [], htmlDash = [];
 
-            currentTx.forEach(t => {
+            txFiltradas.forEach(t => {
+                const trBase = (color, categoryList) => `
+                    <tr class="hover:bg-dark-border/50">
+                        <td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td>
+                        <td class="px-6 py-3 font-medium text-white">${t.description}</td>
+                        <td class="px-6 py-3 text-gray-400">${t.sector || 'N/A'}</td>
+                        <td class="px-6 py-3 text-${color}-400">${t.category}</td>
+                        <td class="px-6 py-3 text-right font-bold text-${color}-400">${formatMoney(t.amount)}</td>
+                        <td class="px-6 py-3 text-center"><button onclick="deletarTransacao('${t.id}')" class="text-rose-400 hover:text-rose-300"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
+                    </tr>`;
+
                 if (t.type === 'income') {
-                    totalReceitas += t.amount;
-                    receitasPorCat[t.category] = (receitasPorCat[t.category] || 0) + t.amount;
-                    
-                    listasReceitasHTML.push(`
-                        <tr class="hover:bg-dark-border/50 transition-colors">
-                            <td class="px-6 py-4 whitespace-nowrap text-gray-400">${formatDate(t.date)}</td>
-                            <td class="px-6 py-4 font-medium text-white">${t.description}</td>
-                            <td class="px-6 py-4 text-brand-400">${t.category}</td>
-                            <td class="px-6 py-4 text-right font-bold text-emerald-400">${formatMoney(t.amount)}</td>
-                            <td class="px-6 py-4 text-center">
-                                <button onclick="deletarTransacao('${t.id}')" class="text-rose-400 hover:text-rose-300 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                            </td>
-                        </tr>
-                    `);
+                    totRec += t.amount; resRec[t.category] = (resRec[t.category] || 0) + t.amount;
+                    htmlRec.push(trBase('emerald'));
+                } else if (t.type === 'product') {
+                    totProd += t.amount; resProd[t.category] = (resProd[t.category] || 0) + t.amount;
+                    htmlProd.push(trBase('indigo'));
                 } else if (t.type === 'expense') {
-                    totalDespesas += t.amount;
-                    despesasPorCat[t.category] = (despesasPorCat[t.category] || 0) + t.amount;
-
-                    listasDespesasHTML.push(`
-                        <tr class="hover:bg-dark-border/50 transition-colors">
-                            <td class="px-6 py-4 whitespace-nowrap text-gray-400">${formatDate(t.date)}</td>
-                            <td class="px-6 py-4 font-medium text-white">${t.description}</td>
-                            <td class="px-6 py-4 text-gray-400">${t.category}</td>
-                            <td class="px-6 py-4 text-right font-bold text-rose-400">${formatMoney(t.amount)}</td>
-                            <td class="px-6 py-4 text-center">
-                                <button onclick="deletarTransacao('${t.id}')" class="text-rose-400 hover:text-rose-300 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                            </td>
-                        </tr>
-                    `);
+                    totDesp += t.amount; resDesp[t.category] = (resDesp[t.category] || 0) + t.amount;
+                    htmlDesp.push(trBase('rose'));
                 }
             });
 
-            // Cálculos Finais
-            const lucroLiquido = totalReceitas - totalDespesas;
-            const proLaboreSocio = lucroLiquido > 0 ? lucroLiquido / 2 : 0;
-            const margem = totalReceitas > 0 ? (lucroLiquido / totalReceitas) * 100 : 0;
+            // Resumo Dash (Últimas 5 global)
+            txFiltradas.slice(0, 8).forEach(t => {
+                const colors = { income: 'emerald', product: 'indigo', expense: 'rose' };
+                const c = colors[t.type];
+                const typeName = t.type === 'income' ? 'Sócio' : t.type === 'product' ? 'Produto' : 'Despesa';
+                htmlDash.push(`
+                    <tr class="border-b border-dark-border/50 last:border-0">
+                        <td class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider">${typeName}</td>
+                        <td class="px-4 py-3 font-medium text-white">${t.description}</td>
+                        <td class="px-4 py-3 text-gray-400">${t.category}</td>
+                        <td class="px-4 py-3 text-gray-400 text-xs">${t.sector || '-'}</td>
+                        <td class="px-4 py-3 text-right font-bold text-${c}-400">${formatMoney(t.amount)}</td>
+                    </tr>
+                `);
+            });
 
-            // Atualiza Dashboard Cards
-            document.getElementById('dash-faturamento').textContent = formatMoney(totalReceitas);
-            document.getElementById('dash-despesas').textContent = formatMoney(totalDespesas);
+            const lucroLiquido = (totRec + totProd) - totDesp;
+            const proLabore = lucroLiquido > 0 ? lucroLiquido / 2 : 0;
+
+            // Updates Tela
+            document.getElementById('dash-faturamento-socios').textContent = formatMoney(totRec);
+            document.getElementById('dash-faturamento-produtos').textContent = formatMoney(totProd);
+            document.getElementById('dash-despesas').textContent = formatMoney(totDesp);
             document.getElementById('dash-lucro').textContent = formatMoney(lucroLiquido);
-            document.getElementById('dash-margem').textContent = `${margem.toFixed(1)}%`;
-            
             document.getElementById('dash-lucro').className = `text-2xl font-bold ${lucroLiquido >= 0 ? 'text-brand-400' : 'text-rose-400'}`;
-            
-            document.getElementById('dash-socio1').textContent = formatMoney(proLaboreSocio);
-            document.getElementById('dash-socio2').textContent = formatMoney(proLaboreSocio);
+            document.getElementById('dash-socio1').textContent = formatMoney(proLabore);
+            document.getElementById('dash-socio2').textContent = formatMoney(proLabore);
 
-            // Atualiza Tabelas nas abas de input
-            document.getElementById('lista-receitas').innerHTML = listasReceitasHTML.length ? listasReceitasHTML.join('') : '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Nenhuma receita registrada neste mês.</td></tr>';
-            document.getElementById('lista-despesas').innerHTML = listasDespesasHTML.length ? listasDespesasHTML.join('') : '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Nenhum gasto registrado neste mês.</td></tr>';
+            document.getElementById('dash-table-recentes').innerHTML = htmlDash.join('') || '<tr><td colspan="5" class="px-4 py-3 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
+            document.getElementById('lista-receitas').innerHTML = htmlRec.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
+            document.getElementById('lista-produtos').innerHTML = htmlProd.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
+            document.getElementById('lista-despesas').innerHTML = htmlDesp.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
 
-            // Atualiza Resumos na Dash (Top 5)
-            const recDashHTML = currentTx.filter(t=>t.type==='income').slice(0,5).map(t => `
-                <tr>
-                    <td class="px-4 py-3 font-medium text-white">${t.description}</td>
-                    <td class="px-4 py-3 text-brand-400">${t.category}</td>
-                    <td class="px-4 py-3 text-right text-emerald-400 font-bold">${formatMoney(t.amount)}</td>
-                </tr>
-            `).join('');
-            document.getElementById('dash-table-receitas').innerHTML = recDashHTML || '<tr><td colspan="3" class="px-4 py-3 text-center text-gray-500 text-xs">Vazio</td></tr>';
-
-            const despDashHTML = currentTx.filter(t=>t.type==='expense').slice(0,5).map(t => `
-                <tr>
-                    <td class="px-4 py-3 font-medium text-white">${t.description}</td>
-                    <td class="px-4 py-3 text-gray-400">${t.category}</td>
-                    <td class="px-4 py-3 text-right text-rose-400 font-bold">${formatMoney(t.amount)}</td>
-                </tr>
-            `).join('');
-            document.getElementById('dash-table-despesas').innerHTML = despDashHTML || '<tr><td colspan="3" class="px-4 py-3 text-center text-gray-500 text-xs">Vazio</td></tr>';
-
-            // Atualiza Seção de Relatórios
+            // Relatório
             document.getElementById('rel-mes-texto').textContent = currentMonthFilter.split('-').reverse().join('/');
+            document.getElementById('rel-setor-texto').textContent = currentSectorFilter === 'Todos' ? 'Todos os Setores (Consolidado)' : currentSectorFilter;
             
-            let htmlResumoRec = '';
-            for(let cat in receitasPorCat) {
-                htmlResumoRec += `<li class="flex justify-between border-b border-dark-border/50 print:border-gray-200 pb-1"><span>${cat}</span> <strong>${formatMoney(receitasPorCat[cat])}</strong></li>`;
-            }
-            document.getElementById('rel-resumo-receitas').innerHTML = htmlResumoRec || '<li>Sem receitas</li>';
-            document.getElementById('rel-total-receitas').textContent = formatMoney(totalReceitas);
+            const renderResumo = (obj, idList, idTotal, totalVal) => {
+                let h = '';
+                for(let k in obj) h += `<li class="flex justify-between border-b border-dark-border/30 print:border-gray-200 pb-1"><span>${k}</span> <strong>${formatMoney(obj[k])}</strong></li>`;
+                document.getElementById(idList).innerHTML = h || '<li>Sem dados</li>';
+                document.getElementById(idTotal).textContent = formatMoney(totalVal);
+            };
 
-            let htmlResumoDesp = '';
-            for(let cat in despesasPorCat) {
-                htmlResumoDesp += `<li class="flex justify-between border-b border-dark-border/50 print:border-gray-200 pb-1"><span>${cat}</span> <strong>${formatMoney(despesasPorCat[cat])}</strong></li>`;
-            }
-            document.getElementById('rel-resumo-despesas').innerHTML = htmlResumoDesp || '<li>Sem gastos</li>';
-            document.getElementById('rel-total-despesas').textContent = formatMoney(totalDespesas);
+            renderResumo(resRec, 'rel-resumo-receitas', 'rel-total-receitas', totRec);
+            renderResumo(resProd, 'rel-resumo-produtos', 'rel-total-produtos', totProd);
+            renderResumo(resDesp, 'rel-resumo-despesas', 'rel-total-despesas', totDesp);
 
-            document.getElementById('rel-fim-fat').textContent = formatMoney(totalReceitas);
-            document.getElementById('rel-fim-custos').textContent = formatMoney(totalDespesas);
+            document.getElementById('rel-fim-socios').textContent = formatMoney(totRec);
+            document.getElementById('rel-fim-prod').textContent = formatMoney(totProd);
+            document.getElementById('rel-fim-fat').textContent = formatMoney(totRec + totProd);
+            document.getElementById('rel-fim-custos').textContent = formatMoney(totDesp);
             document.getElementById('rel-fim-lucro').textContent = formatMoney(lucroLiquido);
-            document.getElementById('rel-socio1').textContent = formatMoney(proLaboreSocio);
-            document.getElementById('rel-socio2').textContent = formatMoney(proLaboreSocio);
-            document.getElementById('rel-margem').textContent = `${margem.toFixed(1)}%`;
+            document.getElementById('rel-socio1').textContent = formatMoney(proLabore);
+            document.getElementById('rel-socio2').textContent = formatMoney(proLabore);
 
             lucide.createIcons();
         };
 
-        // -------------------------
-        // AÇÕES DO USUÁRIO (CRIAR/DELETAR/SALVAR)
-        // -------------------------
-        
-        // Adicionar Receita
-        document.getElementById('form-receita').addEventListener('submit', async (e) => {
+        // --- SUBMIT FORMS ---
+        const handleFormSubmit = async (e, type, prefix) => {
             e.preventDefault();
             if (!currentUser) return;
+            if(!appSettings.sectors || appSettings.sectors.length === 0) {
+                alert("Por favor, adicione pelo menos um SETOR nas Configurações antes de registrar.");
+                return;
+            }
 
-            const nome = document.getElementById('rec-nome').value;
-            const cat = document.getElementById('rec-categoria').value;
-            const val = parseFloat(document.getElementById('rec-valor').value);
-            const hoje = new Date().toISOString().split('T')[0];
+            const desc = document.getElementById(`${prefix}-nome`)?.value || document.getElementById(`${prefix}-desc`)?.value;
+            const cat = document.getElementById(`${prefix}-categoria`).value;
+            const set = document.getElementById(`${prefix}-setor`).value;
+            const val = parseFloat(document.getElementById(`${prefix}-valor`).value);
+            
+            if(!cat || !set) { alert("Categoria e Setor são obrigatórios."); return; }
 
             try {
-                const transRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions');
-                await addDoc(transRef, {
-                    type: 'income',
-                    description: nome,
-                    category: cat,
-                    amount: val,
-                    date: hoje,
-                    timestamp: Date.now()
+                await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions'), {
+                    type: type, description: desc, category: cat, sector: set, amount: val,
+                    date: new Date().toISOString().split('T')[0], timestamp: Date.now()
                 });
-                document.getElementById('form-receita').reset();
-            } catch (error) {
-                console.error("Erro ao adicionar receita", error);
-            }
-        });
+                e.target.reset();
+            } catch (err) { console.error("Erro add:", err); }
+        };
 
-        // Adicionar Despesa
-        document.getElementById('form-despesa').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!currentUser) return;
+        document.getElementById('form-receita').addEventListener('submit', e => handleFormSubmit(e, 'income', 'rec'));
+        document.getElementById('form-produto').addEventListener('submit', e => handleFormSubmit(e, 'product', 'prod'));
+        document.getElementById('form-despesa').addEventListener('submit', e => handleFormSubmit(e, 'expense', 'desp'));
 
-            const desc = document.getElementById('desp-desc').value;
-            const cat = document.getElementById('desp-categoria').value;
-            const val = parseFloat(document.getElementById('desp-valor').value);
-            const hoje = new Date().toISOString().split('T')[0];
-
-            try {
-                const transRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions');
-                await addDoc(transRef, {
-                    type: 'expense',
-                    description: desc,
-                    category: cat,
-                    amount: val,
-                    date: hoje,
-                    timestamp: Date.now()
-                });
-                document.getElementById('form-despesa').reset();
-            } catch (error) {
-                console.error("Erro ao adicionar despesa", error);
-            }
-        });
-
-        // Deletar Transação
         window.deletarTransacao = async (id) => {
-            if (!currentUser) return;
-            if(confirm('Tem certeza que deseja apagar este registro?')) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions', id));
-                } catch (error) {
-                    console.error("Erro ao deletar", error);
-                }
+            if (currentUser && confirm('Apagar este registro?')) {
+                await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions', id));
             }
         };
 
-        // Salvar Configurações
-        document.getElementById('form-config').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!currentUser) return;
+        // --- CONFIGURAÇÕES DEDICADAS ---
+        window.salvarConfigGeral = async () => {
+            if(!currentUser) return;
+            appSettings.name = document.getElementById('conf-nome').value;
+            appSettings.cnpj = document.getElementById('conf-cnpj').value;
+            await saveSettingsToFirebase();
+            alert("Dados salvos!");
+        };
 
-            const nome = document.getElementById('conf-nome').value;
-            const cnpj = document.getElementById('conf-cnpj').value;
+        const saveSettingsToFirebase = async () => {
+            await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'geral'), appSettings);
+        };
 
-            try {
-                const settingsRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'geral');
-                await setDoc(settingsRef, { name: nome, cnpj: cnpj });
-                
-                const msg = document.getElementById('config-save-msg');
-                msg.classList.remove('hidden');
-                setTimeout(() => msg.classList.add('hidden'), 3000);
-            } catch (error) {
-                console.error("Erro ao salvar config", error);
+        window.addConfigItem = async (listKey, inputId) => {
+            const val = document.getElementById(inputId).value.trim();
+            if(!val) return;
+            if(!appSettings[listKey]) appSettings[listKey] = [];
+            if(!appSettings[listKey].includes(val)) {
+                appSettings[listKey].push(val);
+                document.getElementById(inputId).value = '';
+                await saveSettingsToFirebase();
             }
-        });
+        };
 
-        // Inicializa aba ativa
+        window.remConfigItem = async (listKey, index) => {
+            if(confirm('Remover este item?')) {
+                appSettings[listKey].splice(index, 1);
+                await saveSettingsToFirebase();
+            }
+        };
+
+        const renderConfigLists = () => {
+            const render = (listKey, elementId) => {
+                const arr = appSettings[listKey] || [];
+                document.getElementById(elementId).innerHTML = arr.map((item, idx) => `
+                    <li class="flex justify-between items-center bg-dark-bg px-3 py-2 rounded-lg border border-dark-border">
+                        <span class="text-gray-300 text-sm">${item}</span>
+                        <button onclick="remConfigItem('${listKey}', ${idx})" class="text-rose-400 hover:text-rose-500"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    </li>
+                `).join('');
+            };
+            render('sectors', 'lista-conf-setores');
+            render('catIncome', 'lista-conf-rec');
+            render('catProduct', 'lista-conf-prod');
+            render('catExpense', 'lista-conf-desp');
+            lucide.createIcons();
+        };
+
         navigate('dashboard');
-
     </script>
 </body>
 </html>
