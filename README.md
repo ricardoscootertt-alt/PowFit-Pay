@@ -172,25 +172,29 @@
                     <div class="bg-dark-card p-6 rounded-2xl border border-dark-border">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-gray-400 text-sm font-medium mb-1">Venda Produtos</p>
+                                <p class="text-gray-400 text-sm font-medium mb-1">Venda Produtos Bruta</p>
                                 <h3 id="dash-faturamento-produtos" class="text-2xl font-bold text-indigo-400">R$ 0,00</h3>
                             </div>
                             <div class="p-2 bg-indigo-400/10 rounded-lg"><i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-400"></i></div>
                         </div>
                     </div>
-                    <div class="bg-dark-card p-6 rounded-2xl border border-dark-border">
+                    <div class="bg-dark-card p-6 rounded-2xl border border-dark-border relative group">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-gray-400 text-sm font-medium mb-1">Gastos Totais</p>
+                                <p class="text-gray-400 text-sm font-medium mb-1 cursor-help border-b border-dashed border-gray-500 inline-block">Gastos Totais <span class="text-xs text-gray-500">(?)</span></p>
                                 <h3 id="dash-despesas" class="text-2xl font-bold text-rose-400">R$ 0,00</h3>
                             </div>
                             <div class="p-2 bg-rose-400/10 rounded-lg"><i data-lucide="trending-down" class="w-5 h-5 text-rose-400"></i></div>
+                        </div>
+                        <!-- Tooltip explicando os gastos -->
+                        <div class="absolute bottom-full left-0 mb-2 w-64 p-3 bg-gray-800 text-xs text-gray-200 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 border border-gray-700">
+                            Inclui Despesas Gerais + Custo de aquisição dos Produtos Vendidos.
                         </div>
                     </div>
                     <div class="bg-dark-card p-6 rounded-2xl border border-brand-500/30 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-gray-400 text-sm font-medium mb-1">Lucro Líquido</p>
+                                <p class="text-gray-400 text-sm font-medium mb-1">Lucro Líquido Real</p>
                                 <h3 id="dash-lucro" class="text-2xl font-bold text-brand-400">R$ 0,00</h3>
                             </div>
                             <div class="p-2 bg-brand-500/10 rounded-lg"><i data-lucide="wallet" class="w-5 h-5 text-brand-400"></i></div>
@@ -224,7 +228,7 @@
                                     <th class="px-4 py-3">Descrição</th>
                                     <th class="px-4 py-3">Categoria</th>
                                     <th class="px-4 py-3">Setor</th>
-                                    <th class="px-4 py-3 rounded-r-lg text-right">Valor</th>
+                                    <th class="px-4 py-3 rounded-r-lg text-right">Valor Final</th>
                                 </tr>
                             </thead>
                             <tbody id="dash-table-recentes" class="divide-y divide-dark-border"></tbody>
@@ -285,7 +289,7 @@
             <section id="sec-produtos" class="page-section hidden">
                 <div class="bg-dark-card rounded-2xl border border-dark-border p-6 mb-8">
                     <h3 class="text-lg font-bold text-white mb-4">Registrar Venda de Produto</h3>
-                    <form id="form-produto" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
+                    <form id="form-produto" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 items-end">
                         <div class="lg:col-span-2">
                             <label class="block text-sm font-medium text-gray-400 mb-1">Descrição do Produto</label>
                             <input type="text" id="prod-nome" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Ex: Camiseta Fitness M">
@@ -294,33 +298,47 @@
                             <label class="block text-sm font-medium text-gray-400 mb-1">Setor</label>
                             <div class="flex gap-2">
                                 <select id="prod-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
-                                <button type="button" onclick="quickAddConfig('sectors', 'Digite o nome do novo Setor:', 'prod-setor')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
+                                <button type="button" onclick="quickAddConfig('sectors', 'Digite o nome do novo Setor:', 'prod-setor')" class="bg-brand-600 hover:bg-brand-500 text-white px-2 text-xs rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria (Produto)</label>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria</label>
                             <div class="flex gap-2">
                                 <select id="prod-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
-                                <button type="button" onclick="quickAddConfig('catProduct', 'Digite a nova Categoria de Produto:', 'prod-categoria')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
+                                <button type="button" onclick="quickAddConfig('catProduct', 'Digite a nova Categoria de Produto:', 'prod-categoria')" class="bg-brand-600 hover:bg-brand-500 text-white px-2 text-xs rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Valor Total (R$)</label>
-                            <input type="number" id="prod-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="0.00">
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Custo (R$)</label>
+                            <input type="number" id="prod-custo" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Custo Pago">
                         </div>
                         <div>
-                            <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Venda (R$)</label>
+                            <input type="number" id="prod-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Valor Cobrado">
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-2 rounded-lg transition-colors flex items-center justify-center gap-1 shadow-lg text-sm">
                                 <i data-lucide="check" class="w-4 h-4"></i> Salvar
                             </button>
                         </div>
                     </form>
                 </div>
+                
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
                     <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Vendas do Mês</h3></div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead class="text-xs text-gray-400 uppercase bg-dark-bg">
-                                <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Produto</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ação</th></tr>
+                                <tr>
+                                    <th class="px-6 py-3">Data</th>
+                                    <th class="px-6 py-3">Produto</th>
+                                    <th class="px-6 py-3">Setor</th>
+                                    <th class="px-6 py-3">Categoria</th>
+                                    <th class="px-6 py-3 text-right">Custo</th>
+                                    <th class="px-6 py-3 text-right">Venda</th>
+                                    <th class="px-6 py-3 text-right">Lucro Un.</th>
+                                    <th class="px-6 py-3 text-center">Ação</th>
+                                </tr>
                             </thead>
                             <tbody id="lista-produtos" class="divide-y divide-dark-border"></tbody>
                         </table>
@@ -331,7 +349,7 @@
             <!-- DESPESAS SECTION -->
             <section id="sec-despesas" class="page-section hidden">
                 <div class="bg-dark-card rounded-2xl border border-dark-border p-6 mb-8">
-                    <h3 class="text-lg font-bold text-white mb-4">Registrar Gastos/Despesas</h3>
+                    <h3 class="text-lg font-bold text-white mb-4">Registrar Gastos Gerais/Despesas</h3>
                     <form id="form-despesa" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
                         <div class="lg:col-span-2">
                             <label class="block text-sm font-medium text-gray-400 mb-1">Descrição</label>
@@ -407,14 +425,14 @@
                             </div>
                         </div>
                         <div>
-                            <h4 class="font-bold text-indigo-400 print:text-black mb-3 border-b border-dark-border print:border-gray-300 pb-2 flex items-center gap-2"><i data-lucide="shopping-bag" class="w-4 h-4"></i> Venda de Produtos</h4>
+                            <h4 class="font-bold text-indigo-400 print:text-black mb-3 border-b border-dark-border print:border-gray-300 pb-2 flex items-center gap-2"><i data-lucide="shopping-bag" class="w-4 h-4"></i> Venda Bruta de Produtos</h4>
                             <ul id="rel-resumo-produtos" class="space-y-2 text-sm text-gray-400 print:text-gray-700 mb-4"></ul>
                             <div class="pt-2 border-t border-dark-border print:border-gray-300 flex justify-between font-bold text-white print:text-black">
                                 <span>Total Produtos:</span><span id="rel-total-produtos" class="text-indigo-400 print:text-black">R$ 0,00</span>
                             </div>
                         </div>
                         <div>
-                            <h4 class="font-bold text-rose-400 print:text-black mb-3 border-b border-dark-border print:border-gray-300 pb-2 flex items-center gap-2"><i data-lucide="trending-down" class="w-4 h-4"></i> Despesas</h4>
+                            <h4 class="font-bold text-rose-400 print:text-black mb-3 border-b border-dark-border print:border-gray-300 pb-2 flex items-center gap-2"><i data-lucide="trending-down" class="w-4 h-4"></i> Despesas Gerais</h4>
                             <ul id="rel-resumo-despesas" class="space-y-2 text-sm text-gray-400 print:text-gray-700 mb-4"></ul>
                             <div class="pt-2 border-t border-dark-border print:border-gray-300 flex justify-between font-bold text-white print:text-black">
                                 <span>Total Gastos:</span><span id="rel-total-despesas" class="text-rose-400 print:text-black">R$ 0,00</span>
@@ -423,23 +441,26 @@
                     </div>
 
                     <div class="bg-dark-bg print:bg-white border border-dark-border print:border-gray-300 p-6 rounded-xl max-w-2xl mx-auto">
-                        <h4 class="text-xl font-bold text-white print:text-black mb-6 text-center uppercase tracking-wider">Fechamento do Período</h4>
+                        <h4 class="text-xl font-bold text-white print:text-black mb-6 text-center uppercase tracking-wider">Cálculo Completo de Lucro</h4>
                         <div class="space-y-3 mb-6">
                             <div class="flex justify-between items-center text-gray-300 print:text-gray-800">
                                 <span>(+) Receitas de Sócios:</span><span id="rel-fim-socios" class="font-medium">R$ 0,00</span>
                             </div>
                             <div class="flex justify-between items-center text-gray-300 print:text-gray-800">
-                                <span>(+) Venda de Produtos:</span><span id="rel-fim-prod" class="font-medium">R$ 0,00</span>
+                                <span>(+) Venda de Produtos (Bruto):</span><span id="rel-fim-prod" class="font-medium">R$ 0,00</span>
                             </div>
-                            <div class="flex justify-between items-center text-gray-300 print:text-gray-800 font-bold border-t border-dark-border print:border-gray-200 pt-2">
+                            <div class="flex justify-between items-center text-gray-300 print:text-gray-800 font-bold border-t border-dark-border print:border-gray-200 pt-2 pb-2">
                                 <span>(=) Faturamento Bruto Total:</span><span id="rel-fim-fat" class="text-white print:text-black">R$ 0,00</span>
                             </div>
                             <div class="flex justify-between items-center text-gray-300 print:text-gray-800 text-rose-400 print:text-red-600">
-                                <span>(-) Custos Totais (Despesas):</span><span id="rel-fim-custos" class="font-medium">R$ 0,00</span>
+                                <span>(-) Despesas Gerais:</span><span id="rel-fim-custos" class="font-medium">R$ 0,00</span>
+                            </div>
+                            <div class="flex justify-between items-center text-gray-300 print:text-gray-800 text-rose-400 print:text-red-600 border-b border-dark-border print:border-gray-200 pb-2">
+                                <span>(-) Custo dos Produtos Vendidos (CMV):</span><span id="rel-fim-custos-prod" class="font-medium">R$ 0,00</span>
                             </div>
                         </div>
                         <div class="flex justify-between items-center mb-6 text-brand-400 print:text-black font-bold text-2xl border-y border-dark-border print:border-gray-400 py-4">
-                            <span>(=) Lucro Líquido Final:</span>
+                            <span>(=) Lucro Líquido Real:</span>
                             <span id="rel-fim-lucro">R$ 0,00</span>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
@@ -538,7 +559,6 @@
         let currentUser = null;
         let transactions = [];
         
-        // Estado INICIAL exato pedido por você
         let appSettings = { 
             name: 'Nome do Clube', 
             cnpj: '',
@@ -677,15 +697,30 @@
 
         const updateUI = () => {
             const txFiltradas = transactions.filter(t => t.date.startsWith(currentMonthFilter) && (currentSectorFilter === 'Todos' || t.sector === currentSectorFilter));
-            let totRec = 0, totProd = 0, totDesp = 0;
+            
+            let totRec = 0, totProdVenda = 0, totProdCusto = 0, totDesp = 0;
             const resRec = {}, resProd = {}, resDesp = {};
             const htmlRec = [], htmlProd = [], htmlDesp = [], htmlDash = [];
 
             txFiltradas.forEach(t => {
-                const trBase = (color) => `<tr class="hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-${color}-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-${color}-400">${formatMoney(t.amount)}</td><td class="px-6 py-3 text-center"><button onclick="deletarTransacao('${t.id}')" class="text-rose-400 hover:text-rose-300"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`;
-                if (t.type === 'income') { totRec += t.amount; resRec[t.category] = (resRec[t.category] || 0) + t.amount; htmlRec.push(trBase('emerald')); }
-                else if (t.type === 'product') { totProd += t.amount; resProd[t.category] = (resProd[t.category] || 0) + t.amount; htmlProd.push(trBase('indigo')); }
-                else if (t.type === 'expense') { totDesp += t.amount; resDesp[t.category] = (resDesp[t.category] || 0) + t.amount; htmlDesp.push(trBase('rose')); }
+                if (t.type === 'income') { 
+                    totRec += t.amount; 
+                    resRec[t.category] = (resRec[t.category] || 0) + t.amount; 
+                    htmlRec.push(`<tr class="hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-emerald-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(t.amount)}</td><td class="px-6 py-3 text-center"><button onclick="deletarTransacao('${t.id}')" class="text-rose-400 hover:text-rose-300"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`); 
+                }
+                else if (t.type === 'product') { 
+                    const custo = t.costAmount || 0;
+                    const lucroItem = t.amount - custo;
+                    totProdVenda += t.amount; 
+                    totProdCusto += custo;
+                    resProd[t.category] = (resProd[t.category] || 0) + t.amount; // Resumo mostra venda bruta
+                    htmlProd.push(`<tr class="hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-indigo-400">${t.category}</td><td class="px-6 py-3 text-right text-rose-400">${formatMoney(custo)}</td><td class="px-6 py-3 text-right font-bold text-indigo-400">${formatMoney(t.amount)}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(lucroItem)}</td><td class="px-6 py-3 text-center"><button onclick="deletarTransacao('${t.id}')" class="text-rose-400 hover:text-rose-300"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`); 
+                }
+                else if (t.type === 'expense') { 
+                    totDesp += t.amount; 
+                    resDesp[t.category] = (resDesp[t.category] || 0) + t.amount; 
+                    htmlDesp.push(`<tr class="hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-rose-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-rose-400">${formatMoney(t.amount)}</td><td class="px-6 py-3 text-center"><button onclick="deletarTransacao('${t.id}')" class="text-rose-400 hover:text-rose-300"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`); 
+                }
             });
 
             txFiltradas.slice(0, 8).forEach(t => {
@@ -695,12 +730,15 @@
                 htmlDash.push(`<tr class="border-b border-dark-border/50 last:border-0"><td class="px-4 py-3 text-gray-400 text-xs uppercase">${typeName}</td><td class="px-4 py-3 font-medium text-white">${t.description}</td><td class="px-4 py-3 text-gray-400">${t.category}</td><td class="px-4 py-3 text-gray-400 text-xs">${t.sector || '-'}</td><td class="px-4 py-3 text-right font-bold text-${c}-400">${formatMoney(t.amount)}</td></tr>`);
             });
 
-            const lucroLiquido = (totRec + totProd) - totDesp;
+            // Cálculo Completo de Lucro
+            const faturamentoBruto = totRec + totProdVenda;
+            const custosTotais = totDesp + totProdCusto;
+            const lucroLiquido = faturamentoBruto - custosTotais;
             const proLabore = lucroLiquido > 0 ? lucroLiquido / 2 : 0;
 
             document.getElementById('dash-faturamento-socios').textContent = formatMoney(totRec);
-            document.getElementById('dash-faturamento-produtos').textContent = formatMoney(totProd);
-            document.getElementById('dash-despesas').textContent = formatMoney(totDesp);
+            document.getElementById('dash-faturamento-produtos').textContent = formatMoney(totProdVenda);
+            document.getElementById('dash-despesas').textContent = formatMoney(custosTotais); // Dashboard mostra Custos Totais (Despesas + Custo Produto)
             document.getElementById('dash-lucro').textContent = formatMoney(lucroLiquido);
             document.getElementById('dash-lucro').className = `text-2xl font-bold ${lucroLiquido >= 0 ? 'text-brand-400' : 'text-rose-400'}`;
             document.getElementById('dash-socio1').textContent = formatMoney(proLabore);
@@ -708,7 +746,7 @@
 
             document.getElementById('dash-table-recentes').innerHTML = htmlDash.join('') || '<tr><td colspan="5" class="px-4 py-3 text-center text-gray-500">Vazio.</td></tr>';
             document.getElementById('lista-receitas').innerHTML = htmlRec.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
-            document.getElementById('lista-produtos').innerHTML = htmlProd.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
+            document.getElementById('lista-produtos').innerHTML = htmlProd.join('') || '<tr><td colspan="8" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
             document.getElementById('lista-despesas').innerHTML = htmlDesp.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
 
             document.getElementById('rel-mes-texto').textContent = currentMonthFilter.split('-').reverse().join('/');
@@ -722,13 +760,15 @@
             };
 
             renderResumo(resRec, 'rel-resumo-receitas', 'rel-total-receitas', totRec);
-            renderResumo(resProd, 'rel-resumo-produtos', 'rel-total-produtos', totProd);
+            renderResumo(resProd, 'rel-resumo-produtos', 'rel-total-produtos', totProdVenda);
             renderResumo(resDesp, 'rel-resumo-despesas', 'rel-total-despesas', totDesp);
 
+            // Relatório Valores Finais
             document.getElementById('rel-fim-socios').textContent = formatMoney(totRec);
-            document.getElementById('rel-fim-prod').textContent = formatMoney(totProd);
-            document.getElementById('rel-fim-fat').textContent = formatMoney(totRec + totProd);
+            document.getElementById('rel-fim-prod').textContent = formatMoney(totProdVenda);
+            document.getElementById('rel-fim-fat').textContent = formatMoney(faturamentoBruto);
             document.getElementById('rel-fim-custos').textContent = formatMoney(totDesp);
+            document.getElementById('rel-fim-custos-prod').textContent = formatMoney(totProdCusto);
             document.getElementById('rel-fim-lucro').textContent = formatMoney(lucroLiquido);
             document.getElementById('rel-socio1').textContent = formatMoney(proLabore);
             document.getElementById('rel-socio2').textContent = formatMoney(proLabore);
@@ -747,11 +787,24 @@
                 return; 
             }
 
+            const payload = {
+                type: type, 
+                description: desc, 
+                category: catEl.value, 
+                sector: setEl.value, 
+                amount: parseFloat(document.getElementById(`${prefix}-valor`).value),
+                date: new Date().toISOString().split('T')[0], 
+                timestamp: Date.now()
+            };
+
+            // Se for produto, pega o custo também
+            if (type === 'product') {
+                const custo = parseFloat(document.getElementById(`${prefix}-custo`).value);
+                payload.costAmount = isNaN(custo) ? 0 : custo;
+            }
+
             try {
-                await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions'), {
-                    type: type, description: desc, category: catEl.value, sector: setEl.value, amount: parseFloat(document.getElementById(`${prefix}-valor`).value),
-                    date: new Date().toISOString().split('T')[0], timestamp: Date.now()
-                });
+                await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions'), payload);
                 e.target.reset();
             } catch (err) { console.error("Erro add:", err); }
         };
@@ -776,7 +829,6 @@
             alert("Dados salvos!");
         };
 
-        // Função Global de Adição Rápida com Seleção Automática
         window.quickAddConfig = async (listKey, promptText, selectId) => {
             if(!currentUser) return;
             const val = prompt(promptText);
@@ -788,7 +840,6 @@
                     appSettings[listKey].push(item);
                     await saveSettingsToFirebase();
                     
-                    // Tenta selecionar automaticamente o novo item no menu dropdown
                     let tentativas = 0;
                     let checkInterval = setInterval(() => {
                         const el = document.getElementById(selectId);
@@ -797,7 +848,7 @@
                             clearInterval(checkInterval);
                         }
                         tentativas++;
-                        if(tentativas > 20) clearInterval(checkInterval); // Cancela após 2 segundos
+                        if(tentativas > 20) clearInterval(checkInterval);
                     }, 100);
 
                 } else {
