@@ -27,25 +27,39 @@
         thead, th { background-color: #1e293b !important; color: #94a3b8 !important; border-color: #334155 !important; }
         tbody, tr { background-color: #0f172a !important; border-color: #334155 !important; }
         td { background-color: #0f172a !important; border-color: #334155 !important; color: #e2e8f0 !important; }
+        
         tr:hover, tr:hover td { background-color: #1e293b !important; }
 
         td.text-emerald-400, .text-emerald-400 { color: #34d399 !important; }
         td.text-indigo-400, .text-indigo-400 { color: #818cf8 !important; }
         td.text-rose-400, .text-rose-400 { color: #fb7185 !important; }
-        td.text-blue-400, .text-blue-400 { color: #60a5fa !important; }
-        td.text-white, .text-white { color: #ffffff !important; }
         td.text-brand-400, .text-brand-400 { color: #60a5fa !important; }
+        td.text-white, .text-white { color: #ffffff !important; }
         td.text-gray-400, .text-gray-400 { color: #94a3b8 !important; }
         
+        /* ---------------------------------------------------
+           CONFIGURAÇÕES DE IMPRESSÃO A4 (RELATÓRIO ORGANIZADO)
+           --------------------------------------------------- */
+        @page { size: A4; margin: 10mm; }
         @media print {
             body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; background-color: #0f172a !important; }
             .no-print { display: none !important; }
-            .print-container { width: 100% !important; margin: 0 !important; padding: 0 !important; }
+            #app-container { display: block !important; }
+            main { margin-left: 0 !important; padding: 0 !important; }
+            
+            /* Ajustes da Área de Impressão */
+            #print-area { 
+                background-color: #0f172a !important; 
+                border: none !important; 
+                padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            
+            /* Evitar que tabelas quebrem a meio da página */
+            table { page-break-inside: avoid !important; width: 100% !important; }
+            tr { page-break-inside: avoid !important; page-break-after: auto !important; }
             * { box-shadow: none !important; }
-            #print-area { background-color: #0f172a !important; border-color: #334155 !important; }
-            table { page-break-inside: avoid; border-collapse: collapse !important; }
-            th, td { border: 1px solid #334155 !important; }
-            .print-break { page-break-before: always; }
         }
 
         ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -139,7 +153,7 @@
                 </button>
                 <button onclick="navigate('relatorios')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-border rounded-xl transition-all" data-target="relatorios">
                     <i data-lucide="file-bar-chart" class="w-5 h-5"></i>
-                    <span class="font-medium">Relatórios</span>
+                    <span class="font-medium">Relatório A4</span>
                 </button>
                 <button onclick="navigate('configuracoes')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-dark-border rounded-xl transition-all" data-target="configuracoes">
                     <i data-lucide="settings" class="w-5 h-5"></i>
@@ -162,7 +176,7 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main class="flex-1 ml-64 p-8 print-container bg-dark-bg min-h-screen">
+        <main class="flex-1 ml-64 p-8 bg-dark-bg min-h-screen">
             
             <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 no-print gap-4">
                 <div>
@@ -183,82 +197,57 @@
                             </select>
                         </div>
                     </div>
-                    
                     <button id="btn-logout-header" title="Sair da Conta" class="bg-dark-card border border-dark-border p-2.5 rounded-xl text-rose-400 hover:bg-rose-500 hover:text-white transition-colors shadow-sm flex items-center justify-center">
                         <i data-lucide="log-out" class="w-5 h-5"></i>
                     </button>
                 </div>
             </header>
 
-            <!-- AVISO DE CONFIGURAÇÃO PENDENTE -->
             <div id="aviso-config" class="hidden bg-rose-500/10 border border-rose-500/50 text-rose-400 p-4 rounded-xl mb-6 flex items-center justify-between no-print">
                 <div class="flex items-center gap-3">
                     <i data-lucide="alert-triangle" class="w-5 h-5"></i>
-                    <span>Você precisa cadastrar pelo menos um <strong>Setor</strong> nas configurações antes de registrar finanças.</span>
+                    <span>Você precisa cadastrar pelo menos um <strong>Setor</strong> nas configurações.</span>
                 </div>
                 <button onclick="navigate('configuracoes')" class="bg-rose-500 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-rose-600 transition-colors">
-                    Configurar Agora
+                    Configurar
                 </button>
             </div>
 
             <!-- DASHBOARD SECTION -->
             <section id="sec-dashboard" class="page-section">
-                <!-- Dashboard Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <div class="bg-dark-card p-6 rounded-2xl border border-dark-border">
                         <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-gray-400 text-sm font-medium mb-1">Sócios (Receitas)</p>
-                                <h3 id="dash-faturamento-socios" class="text-2xl font-bold text-emerald-400">R$ 0,00</h3>
-                            </div>
+                            <div><p class="text-gray-400 text-sm font-medium mb-1">Sócios (Receitas)</p><h3 id="dash-faturamento-socios" class="text-2xl font-bold text-emerald-400">R$ 0,00</h3></div>
                             <div class="p-2 bg-emerald-400/10 rounded-lg"><i data-lucide="users" class="w-5 h-5 text-emerald-400"></i></div>
                         </div>
                     </div>
                     <div class="bg-dark-card p-6 rounded-2xl border border-dark-border">
                         <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-gray-400 text-sm font-medium mb-1">Venda Produtos Bruta</p>
-                                <h3 id="dash-faturamento-produtos" class="text-2xl font-bold text-indigo-400">R$ 0,00</h3>
-                            </div>
+                            <div><p class="text-gray-400 text-sm font-medium mb-1">Venda Produtos Bruta</p><h3 id="dash-faturamento-produtos" class="text-2xl font-bold text-indigo-400">R$ 0,00</h3></div>
                             <div class="p-2 bg-indigo-400/10 rounded-lg"><i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-400"></i></div>
                         </div>
                     </div>
                     <div class="bg-dark-card p-6 rounded-2xl border border-dark-border relative group">
                         <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-gray-400 text-sm font-medium mb-1 cursor-help border-b border-dashed border-gray-500 inline-block">Gastos Totais <span class="text-xs text-gray-500">(?)</span></p>
-                                <h3 id="dash-despesas" class="text-2xl font-bold text-rose-400">R$ 0,00</h3>
-                            </div>
+                            <div><p class="text-gray-400 text-sm font-medium mb-1 cursor-help border-b border-dashed border-gray-500 inline-block">Gastos Totais (?)</p><h3 id="dash-despesas" class="text-2xl font-bold text-rose-400">R$ 0,00</h3></div>
                             <div class="p-2 bg-rose-400/10 rounded-lg"><i data-lucide="trending-down" class="w-5 h-5 text-rose-400"></i></div>
                         </div>
-                        <div class="absolute bottom-full left-0 mb-2 w-64 p-3 bg-gray-800 text-xs text-gray-200 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 border border-gray-700">
-                            Inclui Despesas Gerais + Custo de aquisição dos Produtos Vendidos.
-                        </div>
+                        <div class="absolute bottom-full left-0 mb-2 w-64 p-3 bg-gray-800 text-xs text-gray-200 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 border border-gray-700">Inclui Despesas Gerais + Custo de aquisição dos Produtos Vendidos.</div>
                     </div>
                     <div class="bg-dark-card p-6 rounded-2xl border border-brand-500/30 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                         <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-gray-400 text-sm font-medium mb-1">Lucro Líquido Real</p>
-                                <h3 id="dash-lucro" class="text-2xl font-bold text-brand-400">R$ 0,00</h3>
-                            </div>
+                            <div><p class="text-gray-400 text-sm font-medium mb-1">Lucro Líquido Real</p><h3 id="dash-lucro" class="text-2xl font-bold text-brand-400">R$ 0,00</h3></div>
                             <div class="p-2 bg-brand-500/10 rounded-lg"><i data-lucide="wallet" class="w-5 h-5 text-brand-400"></i></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="bg-gradient-to-r from-dark-card to-brand-950/20 p-6 rounded-2xl border border-dark-border mb-8">
-                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="pie-chart" class="w-5 h-5 text-brand-400"></i> Pró-labore Sócios do Clube (50/50)
-                    </h3>
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="pie-chart" class="w-5 h-5 text-brand-400"></i> Pró-labore Sócios do Clube (50/50)</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-dark-bg p-4 rounded-xl border border-dark-border flex items-center justify-between">
-                            <span class="text-gray-400">Sócio 1 (50%)</span>
-                            <span id="dash-socio1" class="text-xl font-bold text-white">R$ 0,00</span>
-                        </div>
-                        <div class="bg-dark-bg p-4 rounded-xl border border-dark-border flex items-center justify-between">
-                            <span class="text-gray-400">Sócio 2 (50%)</span>
-                            <span id="dash-socio2" class="text-xl font-bold text-white">R$ 0,00</span>
-                        </div>
+                        <div class="bg-dark-bg p-4 rounded-xl border border-dark-border flex items-center justify-between"><span class="text-gray-400">Sócio 1 (50%)</span><span id="dash-socio1" class="text-xl font-bold text-white">R$ 0,00</span></div>
+                        <div class="bg-dark-bg p-4 rounded-xl border border-dark-border flex items-center justify-between"><span class="text-gray-400">Sócio 2 (50%)</span><span id="dash-socio2" class="text-xl font-bold text-white">R$ 0,00</span></div>
                     </div>
                 </div>
 
@@ -267,13 +256,7 @@
                     <div class="overflow-x-auto rounded-lg border border-dark-border">
                         <table class="w-full text-sm text-left">
                             <thead class="text-xs uppercase">
-                                <tr>
-                                    <th class="px-4 py-3 rounded-tl-lg">Tipo</th>
-                                    <th class="px-4 py-3">Descrição</th>
-                                    <th class="px-4 py-3">Categoria</th>
-                                    <th class="px-4 py-3">Setor</th>
-                                    <th class="px-4 py-3 rounded-tr-lg text-right">Valor Final</th>
-                                </tr>
+                                <tr><th class="px-4 py-3">Tipo</th><th class="px-4 py-3">Descrição</th><th class="px-4 py-3">Categoria</th><th class="px-4 py-3">Setor</th><th class="px-4 py-3 text-right">Valor Final</th></tr>
                             </thead>
                             <tbody id="dash-table-recentes" class="divide-y divide-dark-border"></tbody>
                         </table>
@@ -281,7 +264,7 @@
                 </div>
             </section>
 
-            <!-- RECEITAS (SÓCIOS) SECTION -->
+            <!-- RECEITAS -->
             <section id="sec-receitas" class="page-section hidden">
                 <div class="bg-dark-card rounded-2xl border border-dark-border p-6 mb-8">
                     <div class="flex justify-between items-center mb-4">
@@ -292,39 +275,36 @@
                         <input type="hidden" id="rec-id">
                         <div class="lg:col-span-2">
                             <label class="block text-sm font-medium text-gray-400 mb-1">Nome do Sócio</label>
-                            <input type="text" id="rec-nome" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Ex: João Silva">
+                            <input type="text" id="rec-nome" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Setor</label>
                             <div class="flex gap-2">
                                 <select id="rec-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
-                                <button type="button" onclick="quickAddConfig('sectors', 'Digite o nome do novo Setor:', 'rec-setor')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap" title="Adicionar novo setor">+ Novo</button>
+                                <button type="button" onclick="quickAddConfig('sectors', 'Novo Setor:', 'rec-setor')" class="bg-brand-600 text-white px-3 text-sm rounded-lg font-bold hover:bg-brand-500">+ Novo</button>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria (Pacote)</label>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria</label>
                             <div class="flex gap-2">
                                 <select id="rec-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
-                                <button type="button" onclick="quickAddConfig('catIncome', 'Digite a nova Categoria de Sócio:', 'rec-categoria')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap" title="Adicionar nova categoria">+ Novo</button>
+                                <button type="button" onclick="quickAddConfig('catIncome', 'Nova Categoria:', 'rec-categoria')" class="bg-brand-600 text-white px-3 text-sm rounded-lg font-bold hover:bg-brand-500">+ Novo</button>
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Valor (R$)</label>
-                            <input type="number" id="rec-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="0.00">
+                            <input type="number" id="rec-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none">
                         </div>
                         <div>
-                            <button type="submit" id="btn-submit-rec" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
-                                <i data-lucide="check" class="w-4 h-4"></i> Salvar
-                            </button>
+                            <button type="submit" id="btn-submit-rec" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex justify-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Salvar</button>
                         </div>
                     </form>
                 </div>
-
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Mensalidades do Mês</h3></div>
+                    <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Mensalidades</h3></div>
                     <div class="overflow-x-auto bg-dark-bg">
                         <table class="w-full text-sm text-left text-gray-200">
-                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
+                            <thead class="text-xs uppercase bg-dark-card border-b border-dark-border">
                                 <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Sócio</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ações</th></tr>
                             </thead>
                             <tbody id="lista-receitas" class="divide-y divide-dark-border bg-dark-bg"></tbody>
@@ -333,7 +313,7 @@
                 </div>
             </section>
 
-            <!-- PRODUTOS SECTION -->
+            <!-- PRODUTOS -->
             <section id="sec-produtos" class="page-section hidden">
                 <div class="bg-dark-card rounded-2xl border border-dark-border p-6 mb-8">
                     <div class="flex justify-between items-center mb-4">
@@ -343,35 +323,33 @@
                     <form id="form-produto" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 items-end">
                         <input type="hidden" id="prod-id">
                         <div class="lg:col-span-2">
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Descrição do Produto</label>
-                            <input type="text" id="prod-nome" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Ex: Camiseta Fitness M">
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Descrição</label>
+                            <input type="text" id="prod-nome" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Setor</label>
                             <div class="flex gap-2">
                                 <select id="prod-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
-                                <button type="button" onclick="quickAddConfig('sectors', 'Digite o nome do novo Setor:', 'prod-setor')" class="bg-brand-600 hover:bg-brand-500 text-white px-2 text-xs rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
+                                <button type="button" onclick="quickAddConfig('sectors', 'Novo Setor:', 'prod-setor')" class="bg-brand-600 hover:bg-brand-500 text-white px-2 text-xs rounded-lg font-bold">+ Novo</button>
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Categoria</label>
                             <div class="flex gap-2">
                                 <select id="prod-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
-                                <button type="button" onclick="quickAddConfig('catProduct', 'Digite a nova Categoria de Produto:', 'prod-categoria')" class="bg-brand-600 hover:bg-brand-500 text-white px-2 text-xs rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
+                                <button type="button" onclick="quickAddConfig('catProduct', 'Nova Categoria:', 'prod-categoria')" class="bg-brand-600 hover:bg-brand-500 text-white px-2 text-xs rounded-lg font-bold">+ Novo</button>
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Custo (R$)</label>
-                            <input type="number" id="prod-custo" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Custo Pago">
+                            <input type="number" id="prod-custo" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Venda (R$)</label>
-                            <input type="number" id="prod-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Valor Cobrado">
+                            <input type="number" id="prod-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none">
                         </div>
                         <div>
-                            <button type="submit" id="btn-submit-prod" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-2 rounded-lg transition-colors flex items-center justify-center gap-1 shadow-lg text-sm">
-                                <i data-lucide="check" class="w-4 h-4"></i> Salvar
-                            </button>
+                            <button type="submit" id="btn-submit-prod" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-2 rounded-lg flex justify-center gap-1 text-sm"><i data-lucide="check" class="w-4 h-4"></i> Salvar</button>
                         </div>
                     </form>
                 </div>
@@ -380,17 +358,8 @@
                     <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Vendas do Mês</h3></div>
                     <div class="overflow-x-auto bg-dark-bg">
                         <table class="w-full text-sm text-left text-gray-200">
-                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
-                                <tr>
-                                    <th class="px-6 py-3">Data</th>
-                                    <th class="px-6 py-3">Produto</th>
-                                    <th class="px-6 py-3">Setor</th>
-                                    <th class="px-6 py-3">Categoria</th>
-                                    <th class="px-6 py-3 text-right">Custo</th>
-                                    <th class="px-6 py-3 text-right">Venda</th>
-                                    <th class="px-6 py-3 text-right">Lucro Un.</th>
-                                    <th class="px-6 py-3 text-center">Ações</th>
-                                </tr>
+                            <thead class="text-xs uppercase bg-dark-card border-b border-dark-border">
+                                <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Produto</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Custo</th><th class="px-6 py-3 text-right">Venda</th><th class="px-6 py-3 text-right">Lucro Un.</th><th class="px-6 py-3 text-center">Ações</th></tr>
                             </thead>
                             <tbody id="lista-produtos" class="divide-y divide-dark-border bg-dark-bg"></tbody>
                         </table>
@@ -398,41 +367,39 @@
                 </div>
             </section>
 
-            <!-- DESPESAS SECTION -->
+            <!-- DESPESAS -->
             <section id="sec-despesas" class="page-section hidden">
                 <div class="bg-dark-card rounded-2xl border border-dark-border p-6 mb-8">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-white" id="desp-form-title">Registrar Gastos Gerais/Despesas</h3>
+                        <h3 class="text-lg font-bold text-white" id="desp-form-title">Registrar Gastos/Despesas</h3>
                         <button type="button" id="btn-cancel-edit-desp" class="hidden text-gray-400 hover:text-white text-sm" onclick="cancelEdit('desp')">Cancelar Edição</button>
                     </div>
                     <form id="form-despesa" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
                         <input type="hidden" id="desp-id">
                         <div class="lg:col-span-2">
                             <label class="block text-sm font-medium text-gray-400 mb-1">Descrição</label>
-                            <input type="text" id="desp-desc" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Ex: Conta de Energia">
+                            <input type="text" id="desp-desc" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Setor</label>
                             <div class="flex gap-2">
                                 <select id="desp-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
-                                <button type="button" onclick="quickAddConfig('sectors', 'Digite o nome do novo Setor:', 'desp-setor')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
+                                <button type="button" onclick="quickAddConfig('sectors', 'Novo Setor:', 'desp-setor')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold">+ Novo</button>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria (Despesa)</label>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria</label>
                             <div class="flex gap-2">
                                 <select id="desp-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
-                                <button type="button" onclick="quickAddConfig('catExpense', 'Digite a nova Categoria de Despesa:', 'desp-categoria')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
+                                <button type="button" onclick="quickAddConfig('catExpense', 'Nova Categoria:', 'desp-categoria')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold">+ Novo</button>
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Valor (R$)</label>
-                            <input type="number" id="desp-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="0.00">
+                            <input type="number" id="desp-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none">
                         </div>
                         <div>
-                            <button type="submit" id="btn-submit-desp" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
-                                <i data-lucide="check" class="w-4 h-4"></i> Salvar
-                            </button>
+                            <button type="submit" id="btn-submit-desp" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-medium py-2 px-4 rounded-lg flex justify-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Salvar</button>
                         </div>
                     </form>
                 </div>
@@ -440,7 +407,7 @@
                     <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Gastos do Mês</h3></div>
                     <div class="overflow-x-auto bg-dark-bg">
                         <table class="w-full text-sm text-left text-gray-200">
-                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
+                            <thead class="text-xs uppercase bg-dark-card border-b border-dark-border">
                                 <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Descrição</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ações</th></tr>
                             </thead>
                             <tbody id="lista-despesas" class="divide-y divide-dark-border bg-dark-bg"></tbody>
@@ -449,140 +416,109 @@
                 </div>
             </section>
 
-            <!-- RELATÓRIOS SECTION -->
+            <!-- RELATÓRIOS SECTION (FORMATO TABELA A4) -->
             <section id="sec-relatorios" class="page-section hidden">
                 <div class="flex justify-end mb-6 no-print">
                     <button onclick="window.print()" class="bg-brand-600 hover:bg-brand-500 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors font-medium shadow-lg">
-                        <i data-lucide="printer" class="w-5 h-5"></i> Imprimir Relatório
+                        <i data-lucide="printer" class="w-5 h-5"></i> Imprimir Relatório A4
                     </button>
                 </div>
 
-                <div class="bg-dark-bg p-2 md:p-8" id="print-area">
-                    <!-- CABEÇALHO IMPRESSÃO -->
-                    <div class="text-center mb-10 pb-6 border-b-2 border-dark-border">
-                        <h2 id="rel-club-name" class="text-3xl font-bold text-white uppercase tracking-wider">NOME DO CLUBE</h2>
-                        <p id="rel-club-cnpj" class="text-gray-400 mt-1 font-medium">CNPJ: 00.000.000/0000-00</p>
-                        
-                        <div class="inline-block mt-6 px-8 py-3 bg-dark-card border border-dark-border rounded-xl shadow-lg">
-                            <h3 class="text-xl font-bold text-brand-400">
-                                Demonstrativo Financeiro: <span id="rel-mes-texto" class="text-white"></span>
-                            </h3>
-                            <p class="text-sm text-gray-400 mt-2">
-                                Setor Filtrado: <strong id="rel-setor-texto" class="text-white bg-dark-bg px-2 py-1 rounded border border-dark-border ml-1">Todos</strong>
-                            </p>
-                        </div>
+                <!-- O contêiner de impressão usa tabelas HTML nativas para garantir o alinhamento na impressão -->
+                <div class="bg-dark-card border border-dark-border p-8 mx-auto" id="print-area" style="max-width: 210mm;">
+                    
+                    <!-- Cabeçalho -->
+                    <div class="text-center mb-6 pb-4 border-b border-dark-border">
+                        <h2 id="rel-club-name" class="text-2xl font-bold text-white uppercase m-0">NOME DO CLUBE</h2>
+                        <p id="rel-club-cnpj" class="text-gray-400 text-sm m-0 mt-1">CNPJ: 00.000.000/0000-00</p>
+                        <h3 class="text-lg font-bold text-brand-400 mt-4 m-0">
+                            BALANÇO FINANCEIRO MENSAL: <span id="rel-mes-texto" class="text-white"></span>
+                        </h3>
+                        <p class="text-sm text-gray-400 m-0 mt-1">
+                            Setor: <strong id="rel-setor-texto" class="text-white">Todos</strong>
+                        </p>
                     </div>
 
-                    <!-- TABELAS DE RESUMO (3 COLUNAS) -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-                        
-                        <!-- Tabela Receitas -->
-                        <div class="bg-dark-card rounded-xl border border-dark-border overflow-hidden">
-                            <div class="p-3 border-b border-dark-border bg-[#0f172a]/50">
-                                <h4 class="font-bold text-emerald-400 flex items-center gap-2 uppercase text-sm"><i data-lucide="users" class="w-4 h-4"></i> Receitas Sócios</h4>
-                            </div>
-                            <table class="w-full text-sm text-left">
-                                <thead class="text-xs text-gray-400 uppercase bg-dark-bg border-b border-dark-border">
-                                    <tr><th class="px-4 py-2">Categoria</th><th class="px-4 py-2 text-right">Subtotal</th></tr>
-                                </thead>
-                                <tbody id="rel-resumo-receitas" class="divide-y divide-dark-border"></tbody>
-                                <tfoot class="bg-dark-bg font-bold border-t border-dark-border">
-                                    <tr><td class="px-4 py-3 text-white">TOTAL</td><td class="px-4 py-3 text-right text-emerald-400 text-base" id="rel-total-receitas">R$ 0,00</td></tr>
-                                </tfoot>
-                            </table>
-                        </div>
+                    <!-- Tabela de Resumos por Categoria -->
+                    <h4 class="font-bold text-white mb-2 text-center bg-dark-bg py-2 border border-dark-border">DETALHAMENTO POR CATEGORIAS</h4>
+                    <table class="w-full mb-6 border-collapse border border-dark-border text-sm">
+                        <thead>
+                            <tr class="bg-dark-bg">
+                                <th class="border border-dark-border p-2 text-emerald-400 text-center w-1/3">Receitas de Sócios</th>
+                                <th class="border border-dark-border p-2 text-indigo-400 text-center w-1/3">Vendas de Produtos</th>
+                                <th class="border border-dark-border p-2 text-rose-400 text-center w-1/3">Despesas Gerais</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-dark-border p-2 align-top bg-dark-card" id="rel-resumo-receitas"></td>
+                                <td class="border border-dark-border p-2 align-top bg-dark-card" id="rel-resumo-produtos"></td>
+                                <td class="border border-dark-border p-2 align-top bg-dark-card" id="rel-resumo-despesas"></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-dark-bg font-bold">
+                                <td class="border border-dark-border p-2 text-emerald-400 flex justify-between"><span>TOTAL:</span><span id="rel-total-receitas">R$ 0,00</span></td>
+                                <td class="border border-dark-border p-2 text-indigo-400 flex justify-between"><span>TOTAL:</span><span id="rel-total-produtos">R$ 0,00</span></td>
+                                <td class="border border-dark-border p-2 text-rose-400 flex justify-between"><span>TOTAL:</span><span id="rel-total-despesas">R$ 0,00</span></td>
+                            </tr>
+                        </tfoot>
+                    </table>
 
-                        <!-- Tabela Produtos -->
-                        <div class="bg-dark-card rounded-xl border border-dark-border overflow-hidden">
-                            <div class="p-3 border-b border-dark-border bg-[#0f172a]/50">
-                                <h4 class="font-bold text-indigo-400 flex items-center gap-2 uppercase text-sm"><i data-lucide="shopping-bag" class="w-4 h-4"></i> Produtos (Bruto)</h4>
-                            </div>
-                            <table class="w-full text-sm text-left">
-                                <thead class="text-xs text-gray-400 uppercase bg-dark-bg border-b border-dark-border">
-                                    <tr><th class="px-4 py-2">Categoria</th><th class="px-4 py-2 text-right">Subtotal</th></tr>
-                                </thead>
-                                <tbody id="rel-resumo-produtos" class="divide-y divide-dark-border"></tbody>
-                                <tfoot class="bg-dark-bg font-bold border-t border-dark-border">
-                                    <tr><td class="px-4 py-3 text-white">TOTAL</td><td class="px-4 py-3 text-right text-indigo-400 text-base" id="rel-total-produtos">R$ 0,00</td></tr>
-                                </tfoot>
-                            </table>
-                        </div>
+                    <!-- Tabela de Fechamento de Lucro (DRE Simplificada) -->
+                    <table class="w-full mb-6 border-collapse border border-dark-border text-sm bg-dark-card">
+                        <thead>
+                            <tr class="bg-dark-bg"><th colspan="2" class="p-2 border border-dark-border text-center text-white text-base">CÁLCULO DE LUCRO LÍQUIDO</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="p-2 border border-dark-border text-gray-300">(+) Total Arrecadado de Sócios</td>
+                                <td class="p-2 border border-dark-border text-right text-emerald-400 font-medium" id="rel-fim-socios" style="width: 150px;">R$ 0,00</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border border-dark-border text-gray-300">(+) Venda Bruta de Produtos</td>
+                                <td class="p-2 border border-dark-border text-right text-indigo-400 font-medium" id="rel-fim-prod">R$ 0,00</td>
+                            </tr>
+                            <tr class="bg-dark-bg font-bold">
+                                <td class="p-2 border border-dark-border text-white">(=) FATURAMENTO BRUTO TOTAL</td>
+                                <td class="p-2 border border-dark-border text-right text-white" id="rel-fim-fat">R$ 0,00</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border border-dark-border text-gray-300">(-) Despesas Gerais do Clube</td>
+                                <td class="p-2 border border-dark-border text-right text-rose-400 font-medium" id="rel-fim-custos">R$ 0,00</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border border-dark-border text-gray-300">(-) Custo de Compra dos Produtos (CMV)</td>
+                                <td class="p-2 border border-dark-border text-right text-rose-400 font-medium" id="rel-fim-custos-prod">R$ 0,00</td>
+                            </tr>
+                            <tr class="font-bold text-lg">
+                                <td class="p-3 border border-dark-border text-brand-400">(=) RESULTADO / LUCRO LÍQUIDO REAL</td>
+                                <td class="p-3 border border-dark-border text-right text-brand-400" id="rel-fim-lucro">R$ 0,00</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <!-- Tabela Despesas -->
-                        <div class="bg-dark-card rounded-xl border border-dark-border overflow-hidden">
-                            <div class="p-3 border-b border-dark-border bg-[#0f172a]/50">
-                                <h4 class="font-bold text-rose-400 flex items-center gap-2 uppercase text-sm"><i data-lucide="trending-down" class="w-4 h-4"></i> Despesas</h4>
-                            </div>
-                            <table class="w-full text-sm text-left">
-                                <thead class="text-xs text-gray-400 uppercase bg-dark-bg border-b border-dark-border">
-                                    <tr><th class="px-4 py-2">Categoria</th><th class="px-4 py-2 text-right">Subtotal</th></tr>
-                                </thead>
-                                <tbody id="rel-resumo-despesas" class="divide-y divide-dark-border"></tbody>
-                                <tfoot class="bg-dark-bg font-bold border-t border-dark-border">
-                                    <tr><td class="px-4 py-3 text-white">TOTAL</td><td class="px-4 py-3 text-right text-rose-400 text-base" id="rel-total-despesas">R$ 0,00</td></tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
+                    <!-- Tabela de Pró-Labore -->
+                    <table class="w-full border-collapse border border-dark-border text-sm text-center bg-dark-card">
+                        <thead>
+                            <tr class="bg-dark-bg">
+                                <th colspan="2" class="p-2 border border-dark-border text-white">DIVISÃO DE PRÓ-LABORE (50/50)</th>
+                            </tr>
+                            <tr>
+                                <th class="p-2 border border-dark-border text-gray-400 w-1/2">Sócio 1 (50%)</th>
+                                <th class="p-2 border border-dark-border text-gray-400 w-1/2">Sócio 2 (50%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="p-4 border border-dark-border font-bold text-xl text-white" id="rel-socio1">R$ 0,00</td>
+                                <td class="p-4 border border-dark-border font-bold text-xl text-white" id="rel-socio2">R$ 0,00</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                    <!-- TABELA MASTER DE RESULTADOS (DRE) -->
-                    <div class="max-w-3xl mx-auto print-break">
-                        <div class="bg-dark-card rounded-xl border border-dark-border overflow-hidden shadow-2xl">
-                            <div class="bg-dark-bg p-4 border-b border-dark-border text-center">
-                                <h4 class="text-xl font-bold text-white uppercase tracking-wider">Cálculo de Resultados</h4>
-                            </div>
-                            <table class="w-full text-left text-sm md:text-base">
-                                <tbody class="divide-y divide-dark-border">
-                                    <tr class="hover:bg-dark-border/20">
-                                        <td class="px-6 py-4 text-gray-300 font-medium">(+) Receitas de Sócios</td>
-                                        <td class="px-6 py-4 text-right text-emerald-400 font-bold" id="rel-fim-socios">R$ 0,00</td>
-                                    </tr>
-                                    <tr class="hover:bg-dark-border/20">
-                                        <td class="px-6 py-4 text-gray-300 font-medium">(+) Venda de Produtos (Bruto)</td>
-                                        <td class="px-6 py-4 text-right text-indigo-400 font-bold" id="rel-fim-prod">R$ 0,00</td>
-                                    </tr>
-                                    <tr class="bg-dark-bg border-y-2 border-dark-border">
-                                        <td class="px-6 py-4 text-white font-bold uppercase tracking-wider">(=) Faturamento Bruto Total</td>
-                                        <td class="px-6 py-4 text-right text-white font-bold text-lg" id="rel-fim-fat">R$ 0,00</td>
-                                    </tr>
-                                    <tr class="hover:bg-dark-border/20">
-                                        <td class="px-6 py-4 text-gray-300 font-medium">(-) Despesas Gerais</td>
-                                        <td class="px-6 py-4 text-right text-rose-400 font-bold" id="rel-fim-custos">R$ 0,00</td>
-                                    </tr>
-                                    <tr class="hover:bg-dark-border/20">
-                                        <td class="px-6 py-4 text-gray-300 font-medium">(-) CMV (Custo dos Produtos Vendidos)</td>
-                                        <td class="px-6 py-4 text-right text-rose-400 font-bold" id="rel-fim-custos-prod">R$ 0,00</td>
-                                    </tr>
-                                </tbody>
-                                <tfoot class="bg-[#0f172a] border-t-4 border-dark-border">
-                                    <tr>
-                                        <td class="px-6 py-6 text-brand-400 font-bold text-xl uppercase tracking-widest">(=) Lucro Líquido Real</td>
-                                        <td class="px-6 py-6 text-right text-brand-400 font-bold text-2xl" id="rel-fim-lucro">R$ 0,00</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-
-                        <!-- TABELA PRÓ-LABORE -->
-                        <div class="mt-8 bg-dark-card rounded-xl border border-dark-border overflow-hidden">
-                            <table class="w-full text-center">
-                                <thead class="bg-dark-bg border-b border-dark-border">
-                                    <tr><th colspan="2" class="py-3 text-white font-bold uppercase tracking-wider">Divisão de Pró-labore</th></tr>
-                                </thead>
-                                <tbody class="divide-x divide-dark-border">
-                                    <tr>
-                                        <td class="py-6 px-4 w-1/2 hover:bg-dark-border/20 transition-colors">
-                                            <p class="text-sm text-gray-400 mb-2 font-medium uppercase">Sócio 1 (50%)</p>
-                                            <p class="text-2xl font-bold text-white" id="rel-socio1">R$ 0,00</p>
-                                        </td>
-                                        <td class="py-6 px-4 w-1/2 hover:bg-dark-border/20 transition-colors">
-                                            <p class="text-sm text-gray-400 mb-2 font-medium uppercase">Sócio 2 (50%)</p>
-                                            <p class="text-2xl font-bold text-white" id="rel-socio2">R$ 0,00</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="mt-8 text-center text-xs text-gray-500 pt-4 border-t border-dark-border">
+                        Documento gerado pelo sistema PowFit Pay. Uso restrito e confidencial.
                     </div>
                 </div>
             </section>
@@ -609,7 +545,7 @@
                     <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
                         <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5 text-amber-400"></i> Gerenciar Setores</h3>
                         <div class="flex gap-2 mb-4">
-                            <input type="text" id="novo-setor" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Sede Principal, Quadra">
+                            <input type="text" id="novo-setor" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Sede Principal">
                             <button onclick="addConfigItem('sectors', 'novo-setor')" class="bg-amber-500 text-white px-4 rounded-lg hover:bg-amber-600 font-bold">+</button>
                         </div>
                         <ul id="lista-conf-setores" class="space-y-2 max-h-40 overflow-y-auto"></ul>
@@ -618,7 +554,7 @@
                     <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
                         <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="users" class="w-5 h-5 text-emerald-400"></i> Categorias: Sócios</h3>
                         <div class="flex gap-2 mb-4">
-                            <input type="text" id="nova-cat-rec" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Associado Mensal">
+                            <input type="text" id="nova-cat-rec" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Mensal">
                             <button onclick="addConfigItem('catIncome', 'nova-cat-rec')" class="bg-emerald-500 text-white px-4 rounded-lg hover:bg-emerald-600 font-bold">+</button>
                         </div>
                         <ul id="lista-conf-rec" class="space-y-2 max-h-40 overflow-y-auto"></ul>
@@ -627,7 +563,7 @@
                     <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
                         <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-400"></i> Categorias: Produtos</h3>
                         <div class="flex gap-2 mb-4">
-                            <input type="text" id="nova-cat-prod" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Roupas, Bar">
+                            <input type="text" id="nova-cat-prod" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Roupas">
                             <button onclick="addConfigItem('catProduct', 'nova-cat-prod')" class="bg-indigo-500 text-white px-4 rounded-lg hover:bg-indigo-600 font-bold">+</button>
                         </div>
                         <ul id="lista-conf-prod" class="space-y-2 max-h-40 overflow-y-auto"></ul>
@@ -636,7 +572,7 @@
                     <div class="bg-dark-card rounded-2xl border border-dark-border p-6 md:col-span-2">
                         <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="trending-down" class="w-5 h-5 text-rose-400"></i> Categorias: Despesas</h3>
                         <div class="flex gap-2 mb-4 max-w-md">
-                            <input type="text" id="nova-cat-desp" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Manutenção, Água">
+                            <input type="text" id="nova-cat-desp" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Energia">
                             <button onclick="addConfigItem('catExpense', 'nova-cat-desp')" class="bg-rose-500 text-white px-4 rounded-lg hover:bg-rose-600 font-bold">+</button>
                         </div>
                         <ul id="lista-conf-desp" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-40 overflow-y-auto"></ul>
@@ -748,7 +684,7 @@
                 if(btn.dataset.target === targetId) { btn.classList.add('bg-dark-border', 'text-white'); btn.classList.remove('text-gray-400'); } 
                 else { btn.classList.remove('bg-dark-border', 'text-white'); btn.classList.add('text-gray-400'); }
             });
-            const titles = { 'dashboard': 'Dashboard', 'receitas': 'Sócios / Mensalidades', 'produtos': 'Venda de Produtos', 'despesas': 'Despesas / Gastos', 'relatorios': 'Relatórios', 'configuracoes': 'Configurações' };
+            const titles = { 'dashboard': 'Dashboard', 'receitas': 'Sócios / Mensalidades', 'produtos': 'Venda de Produtos', 'despesas': 'Despesas / Gastos', 'relatorios': 'Relatório A4', 'configuracoes': 'Configurações' };
             document.getElementById('page-title').textContent = titles[targetId];
         };
 
@@ -870,17 +806,17 @@
 
                 if (t.type === 'income') { 
                     totRec += t.amount; resRec[t.category] = (resRec[t.category] || 0) + t.amount; 
-                    htmlRec.push(`<tr><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-emerald-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
+                    htmlRec.push(`<tr class="bg-dark-card hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-emerald-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
                 }
                 else if (t.type === 'product') { 
                     const custo = t.costAmount || 0; const lucroItem = t.amount - custo;
                     totProdVenda += t.amount; totProdCusto += custo;
                     resProd[t.category] = (resProd[t.category] || 0) + t.amount; 
-                    htmlProd.push(`<tr><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-indigo-400">${t.category}</td><td class="px-6 py-3 text-right text-rose-400">${formatMoney(custo)}</td><td class="px-6 py-3 text-right font-bold text-indigo-400">${formatMoney(t.amount)}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(lucroItem)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
+                    htmlProd.push(`<tr class="bg-dark-card hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-indigo-400">${t.category}</td><td class="px-6 py-3 text-right text-rose-400">${formatMoney(custo)}</td><td class="px-6 py-3 text-right font-bold text-indigo-400">${formatMoney(t.amount)}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(lucroItem)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
                 }
                 else if (t.type === 'expense') { 
                     totDesp += t.amount; resDesp[t.category] = (resDesp[t.category] || 0) + t.amount; 
-                    htmlDesp.push(`<tr><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-rose-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-rose-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
+                    htmlDesp.push(`<tr class="bg-dark-card hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-rose-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-rose-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
                 }
             });
 
@@ -888,7 +824,7 @@
                 const colors = { income: 'emerald', product: 'indigo', expense: 'rose' };
                 const c = colors[t.type];
                 const typeName = t.type === 'income' ? 'Sócio' : t.type === 'product' ? 'Produto' : 'Despesa';
-                htmlDash.push(`<tr><td class="px-4 py-3 text-gray-400 text-xs uppercase">${typeName}</td><td class="px-4 py-3 font-medium text-white">${t.description}</td><td class="px-4 py-3 text-gray-400">${t.category}</td><td class="px-4 py-3 text-gray-400 text-xs">${t.sector || '-'}</td><td class="px-4 py-3 text-right font-bold text-${c}-400">${formatMoney(t.amount)}</td></tr>`);
+                htmlDash.push(`<tr class="bg-dark-bg border-b border-dark-border/50 last:border-0"><td class="px-4 py-3 text-gray-400 text-xs uppercase">${typeName}</td><td class="px-4 py-3 font-medium text-white">${t.description}</td><td class="px-4 py-3 text-gray-400">${t.category}</td><td class="px-4 py-3 text-gray-400 text-xs">${t.sector || '-'}</td><td class="px-4 py-3 text-right font-bold text-${c}-400">${formatMoney(t.amount)}</td></tr>`);
             });
 
             const faturamentoBruto = totRec + totProdVenda;
@@ -896,7 +832,6 @@
             const lucroLiquido = faturamentoBruto - custosTotais;
             const proLabore = lucroLiquido > 0 ? lucroLiquido / 2 : 0;
 
-            // Dashboard
             document.getElementById('dash-faturamento-socios').textContent = formatMoney(totRec);
             document.getElementById('dash-faturamento-produtos').textContent = formatMoney(totProdVenda);
             document.getElementById('dash-despesas').textContent = formatMoney(custosTotais); 
@@ -905,27 +840,26 @@
             document.getElementById('dash-socio1').textContent = formatMoney(proLabore);
             document.getElementById('dash-socio2').textContent = formatMoney(proLabore);
 
-            document.getElementById('dash-table-recentes').innerHTML = htmlDash.join('') || '<tr><td colspan="5" class="px-4 py-3 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
-            document.getElementById('lista-receitas').innerHTML = htmlRec.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
-            document.getElementById('lista-produtos').innerHTML = htmlProd.join('') || '<tr><td colspan="8" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
-            document.getElementById('lista-despesas').innerHTML = htmlDesp.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
+            document.getElementById('dash-table-recentes').innerHTML = htmlDash.join('') || '<tr class="bg-dark-bg"><td colspan="5" class="px-4 py-3 text-center text-gray-500">Nenhum registro.</td></tr>';
+            document.getElementById('lista-receitas').innerHTML = htmlRec.join('') || '<tr class="bg-dark-card"><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum registro.</td></tr>';
+            document.getElementById('lista-produtos').innerHTML = htmlProd.join('') || '<tr class="bg-dark-card"><td colspan="8" class="px-6 py-4 text-center text-gray-500">Nenhum registro.</td></tr>';
+            document.getElementById('lista-despesas').innerHTML = htmlDesp.join('') || '<tr class="bg-dark-card"><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum registro.</td></tr>';
 
-            // Relatórios
             document.getElementById('rel-mes-texto').textContent = currentMonthFilter.split('-').reverse().join('/');
             document.getElementById('rel-setor-texto').textContent = currentSectorFilter === 'Todos' ? 'Todos os Setores' : currentSectorFilter;
             
-            const renderTabelaResumo = (obj, idTbody, idTotal, totalVal) => {
+            const renderResumoRelatorio = (obj, idList, idTotal, totalVal) => {
                 let h = '';
                 for(let k in obj) {
-                    h += `<tr class="hover:bg-dark-border/30"><td class="px-4 py-2 text-gray-300 font-medium">${k}</td><td class="px-4 py-2 text-right font-medium text-white">${formatMoney(obj[k])}</td></tr>`;
+                    h += `<div class="flex justify-between border-b border-dark-border/50 pb-1 mb-1 text-gray-200"><span>${k}</span> <strong class="text-white">${formatMoney(obj[k])}</strong></div>`;
                 }
-                document.getElementById(idTbody).innerHTML = h || '<tr><td colspan="2" class="px-4 py-4 text-center text-gray-500">Sem registros neste período.</td></tr>';
+                document.getElementById(idList).innerHTML = h || '<div class="text-gray-500 text-center italic">Sem dados neste mês</div>';
                 document.getElementById(idTotal).textContent = formatMoney(totalVal);
             };
 
-            renderTabelaResumo(resRec, 'rel-resumo-receitas', 'rel-total-receitas', totRec);
-            renderTabelaResumo(resProd, 'rel-resumo-produtos', 'rel-total-produtos', totProdVenda);
-            renderTabelaResumo(resDesp, 'rel-resumo-despesas', 'rel-total-despesas', totDesp);
+            renderResumoRelatorio(resRec, 'rel-resumo-receitas', 'rel-total-receitas', totRec);
+            renderResumoRelatorio(resProd, 'rel-resumo-produtos', 'rel-total-produtos', totProdVenda);
+            renderResumoRelatorio(resDesp, 'rel-resumo-despesas', 'rel-total-despesas', totDesp);
 
             document.getElementById('rel-fim-socios').textContent = formatMoney(totRec);
             document.getElementById('rel-fim-prod').textContent = formatMoney(totProdVenda);
@@ -997,7 +931,7 @@
             document.getElementById(`btn-cancel-edit-${prefix}`).classList.remove('hidden');
             const btnSubmit = document.getElementById(`btn-submit-${prefix}`);
             btnSubmit.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i> Atualizar`;
-            btnSubmit.className = "w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg";
+            btnSubmit.className = "w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-4 rounded-lg flex justify-center gap-2 shadow-lg";
 
             document.getElementById(`${prefix}-id`).value = t.id;
             const descEl = document.getElementById(`${prefix}-nome`) || document.getElementById(`${prefix}-desc`);
@@ -1018,7 +952,7 @@
             document.getElementById(`form-${prefix === 'rec' ? 'receita' : prefix === 'prod' ? 'produto' : 'despesa'}`).reset();
             document.getElementById(`${prefix}-id`).value = '';
             
-            const titles = { rec: 'Registrar Pagamento de Sócio', prod: 'Registrar Venda de Produto', desp: 'Registrar Gastos Gerais/Despesas' };
+            const titles = { rec: 'Registrar Pagamento de Sócio', prod: 'Registrar Venda de Produto', desp: 'Registrar Gastos/Despesas' };
             const btnColors = { rec: 'emerald', prod: 'indigo', desp: 'rose' };
             const c = btnColors[prefix];
 
@@ -1027,7 +961,7 @@
             
             const btnSubmit = document.getElementById(`btn-submit-${prefix}`);
             btnSubmit.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Salvar`;
-            btnSubmit.className = `w-full bg-${c}-500 hover:bg-${c}-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg text-sm`;
+            btnSubmit.className = `w-full bg-${c}-500 hover:bg-${c}-600 text-white font-medium py-2 px-4 rounded-lg flex justify-center gap-1 shadow-lg text-sm`;
             lucide.createIcons();
         };
 
