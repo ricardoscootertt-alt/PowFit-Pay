@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="dark only"> <!-- Bloqueia navegadores de inverterem o tema -->
+    <meta name="color-scheme" content="dark only">
     <meta name="theme-color" content="#0f172a">
     <title>PowFit Pay - Gestão de Clubes</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,24 +23,18 @@
         :root { color-scheme: dark only !important; }
         body { font-family: 'Inter', sans-serif; background-color: #0f172a !important; color: #e2e8f0 !important; }
         
-        /* ---------------------------------------------------
-           CORREÇÃO DEFINITIVA PARA TABELAS NO MOBILE 
-           Força o fundo escuro contra qualquer navegador
-           --------------------------------------------------- */
         table, .overflow-x-auto { background-color: #0f172a !important; border-color: #334155 !important; }
         thead, th { background-color: #1e293b !important; color: #94a3b8 !important; border-color: #334155 !important; }
         tbody, tr { background-color: #0f172a !important; border-color: #334155 !important; }
         td { background-color: #0f172a !important; border-color: #334155 !important; color: #e2e8f0 !important; }
-        
-        /* Efeito de hover nas linhas */
         tr:hover, tr:hover td { background-color: #1e293b !important; }
 
-        /* Proteção das cores dos textos para não ficarem brancas/invisíveis */
         td.text-emerald-400, .text-emerald-400 { color: #34d399 !important; }
         td.text-indigo-400, .text-indigo-400 { color: #818cf8 !important; }
         td.text-rose-400, .text-rose-400 { color: #fb7185 !important; }
         td.text-blue-400, .text-blue-400 { color: #60a5fa !important; }
         td.text-white, .text-white { color: #ffffff !important; }
+        td.text-brand-400, .text-brand-400 { color: #60a5fa !important; }
         td.text-gray-400, .text-gray-400 { color: #94a3b8 !important; }
         
         @media print {
@@ -49,6 +43,9 @@
             .print-container { width: 100% !important; margin: 0 !important; padding: 0 !important; }
             * { box-shadow: none !important; }
             #print-area { background-color: #0f172a !important; border-color: #334155 !important; }
+            table { page-break-inside: avoid; border-collapse: collapse !important; }
+            th, td { border: 1px solid #334155 !important; }
+            .print-break { page-break-before: always; }
         }
 
         ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -60,7 +57,7 @@
 </head>
 <body class="bg-dark-bg text-gray-200 min-h-screen flex antialiased">
 
-    <!-- MODAL DARK DE CONFIRMAÇÃO (Para excluir ou alertas) -->
+    <!-- MODAL DARK DE CONFIRMAÇÃO -->
     <div id="custom-confirm-modal" class="hidden fixed inset-0 bg-dark-bg/90 backdrop-blur-sm z-50 flex items-center justify-center transition-opacity duration-300">
         <div class="bg-dark-card p-6 rounded-2xl shadow-2xl border border-dark-border max-w-sm w-full mx-4">
             <h3 id="custom-confirm-title" class="text-lg font-bold text-white mb-2">Confirmar</h3>
@@ -72,7 +69,7 @@
         </div>
     </div>
 
-    <!-- MODAL DARK DE PROMPT (Para criar categorias/setores) -->
+    <!-- MODAL DARK DE PROMPT -->
     <div id="custom-prompt-modal" class="hidden fixed inset-0 bg-dark-bg/90 backdrop-blur-sm z-50 flex items-center justify-center transition-opacity duration-300">
         <div class="bg-dark-card p-6 rounded-2xl shadow-2xl border border-dark-border max-w-sm w-full mx-4">
             <h3 id="custom-prompt-title" class="text-lg font-bold text-white mb-4">Digite o valor:</h3>
@@ -206,6 +203,7 @@
 
             <!-- DASHBOARD SECTION -->
             <section id="sec-dashboard" class="page-section">
+                <!-- Dashboard Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <div class="bg-dark-card p-6 rounded-2xl border border-dark-border">
                         <div class="flex justify-between items-start">
@@ -323,13 +321,13 @@
                 </div>
 
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Mensalidades do Mês</h3></div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs uppercase">
+                    <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Mensalidades do Mês</h3></div>
+                    <div class="overflow-x-auto bg-dark-bg">
+                        <table class="w-full text-sm text-left text-gray-200">
+                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
                                 <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Sócio</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ações</th></tr>
                             </thead>
-                            <tbody id="lista-receitas" class="divide-y divide-dark-border"></tbody>
+                            <tbody id="lista-receitas" class="divide-y divide-dark-border bg-dark-bg"></tbody>
                         </table>
                     </div>
                 </div>
@@ -379,10 +377,10 @@
                 </div>
                 
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Vendas do Mês</h3></div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs uppercase">
+                    <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Vendas do Mês</h3></div>
+                    <div class="overflow-x-auto bg-dark-bg">
+                        <table class="w-full text-sm text-left text-gray-200">
+                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
                                 <tr>
                                     <th class="px-6 py-3">Data</th>
                                     <th class="px-6 py-3">Produto</th>
@@ -394,7 +392,7 @@
                                     <th class="px-6 py-3 text-center">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="lista-produtos" class="divide-y divide-dark-border"></tbody>
+                            <tbody id="lista-produtos" class="divide-y divide-dark-border bg-dark-bg"></tbody>
                         </table>
                     </div>
                 </div>
@@ -439,13 +437,13 @@
                     </form>
                 </div>
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Gastos do Mês</h3></div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs uppercase">
+                    <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Gastos do Mês</h3></div>
+                    <div class="overflow-x-auto bg-dark-bg">
+                        <table class="w-full text-sm text-left text-gray-200">
+                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
                                 <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Descrição</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ações</th></tr>
                             </thead>
-                            <tbody id="lista-despesas" class="divide-y divide-dark-border"></tbody>
+                            <tbody id="lista-despesas" class="divide-y divide-dark-border bg-dark-bg"></tbody>
                         </table>
                     </div>
                 </div>
@@ -459,77 +457,131 @@
                     </button>
                 </div>
 
-                <div class="bg-dark-card rounded-2xl border border-dark-border p-8" id="print-area">
-                    <div class="text-center mb-8 border-b border-dark-border pb-6">
-                        <h2 id="rel-club-name" class="text-3xl font-bold text-white uppercase">NOME DO CLUBE</h2>
-                        <p id="rel-club-cnpj" class="text-gray-400 mt-1">CNPJ: 00.000.000/0000-00</p>
+                <div class="bg-dark-bg p-2 md:p-8" id="print-area">
+                    <!-- CABEÇALHO IMPRESSÃO -->
+                    <div class="text-center mb-10 pb-6 border-b-2 border-dark-border">
+                        <h2 id="rel-club-name" class="text-3xl font-bold text-white uppercase tracking-wider">NOME DO CLUBE</h2>
+                        <p id="rel-club-cnpj" class="text-gray-400 mt-1 font-medium">CNPJ: 00.000.000/0000-00</p>
                         
-                        <div class="inline-block mt-4 px-6 py-2 bg-dark-bg border border-dark-border rounded-xl">
-                            <h3 class="text-lg font-semibold text-brand-400">
-                                Relatório Financeiro: <span id="rel-mes-texto" class="text-white font-bold"></span>
+                        <div class="inline-block mt-6 px-8 py-3 bg-dark-card border border-dark-border rounded-xl shadow-lg">
+                            <h3 class="text-xl font-bold text-brand-400">
+                                Demonstrativo Financeiro: <span id="rel-mes-texto" class="text-white"></span>
                             </h3>
-                            <p class="text-sm text-gray-400 mt-1">
-                                Setor Selecionado: <strong id="rel-setor-texto" class="text-white">Todos</strong>
+                            <p class="text-sm text-gray-400 mt-2">
+                                Setor Filtrado: <strong id="rel-setor-texto" class="text-white bg-dark-bg px-2 py-1 rounded border border-dark-border ml-1">Todos</strong>
                             </p>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                        <div>
-                            <h4 class="font-bold text-emerald-400 mb-3 border-b border-dark-border pb-2 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Receitas de Sócios</h4>
-                            <ul id="rel-resumo-receitas" class="space-y-2 text-sm text-gray-400 mb-4"></ul>
-                            <div class="pt-2 border-t border-dark-border flex justify-between font-bold text-white">
-                                <span>Total Sócios:</span><span id="rel-total-receitas" class="text-emerald-400">R$ 0,00</span>
+                    <!-- TABELAS DE RESUMO (3 COLUNAS) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+                        
+                        <!-- Tabela Receitas -->
+                        <div class="bg-dark-card rounded-xl border border-dark-border overflow-hidden">
+                            <div class="p-3 border-b border-dark-border bg-[#0f172a]/50">
+                                <h4 class="font-bold text-emerald-400 flex items-center gap-2 uppercase text-sm"><i data-lucide="users" class="w-4 h-4"></i> Receitas Sócios</h4>
                             </div>
+                            <table class="w-full text-sm text-left">
+                                <thead class="text-xs text-gray-400 uppercase bg-dark-bg border-b border-dark-border">
+                                    <tr><th class="px-4 py-2">Categoria</th><th class="px-4 py-2 text-right">Subtotal</th></tr>
+                                </thead>
+                                <tbody id="rel-resumo-receitas" class="divide-y divide-dark-border"></tbody>
+                                <tfoot class="bg-dark-bg font-bold border-t border-dark-border">
+                                    <tr><td class="px-4 py-3 text-white">TOTAL</td><td class="px-4 py-3 text-right text-emerald-400 text-base" id="rel-total-receitas">R$ 0,00</td></tr>
+                                </tfoot>
+                            </table>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-indigo-400 mb-3 border-b border-dark-border pb-2 flex items-center gap-2"><i data-lucide="shopping-bag" class="w-4 h-4"></i> Venda Bruta de Produtos</h4>
-                            <ul id="rel-resumo-produtos" class="space-y-2 text-sm text-gray-400 mb-4"></ul>
-                            <div class="pt-2 border-t border-dark-border flex justify-between font-bold text-white">
-                                <span>Total Produtos:</span><span id="rel-total-produtos" class="text-indigo-400">R$ 0,00</span>
+
+                        <!-- Tabela Produtos -->
+                        <div class="bg-dark-card rounded-xl border border-dark-border overflow-hidden">
+                            <div class="p-3 border-b border-dark-border bg-[#0f172a]/50">
+                                <h4 class="font-bold text-indigo-400 flex items-center gap-2 uppercase text-sm"><i data-lucide="shopping-bag" class="w-4 h-4"></i> Produtos (Bruto)</h4>
                             </div>
+                            <table class="w-full text-sm text-left">
+                                <thead class="text-xs text-gray-400 uppercase bg-dark-bg border-b border-dark-border">
+                                    <tr><th class="px-4 py-2">Categoria</th><th class="px-4 py-2 text-right">Subtotal</th></tr>
+                                </thead>
+                                <tbody id="rel-resumo-produtos" class="divide-y divide-dark-border"></tbody>
+                                <tfoot class="bg-dark-bg font-bold border-t border-dark-border">
+                                    <tr><td class="px-4 py-3 text-white">TOTAL</td><td class="px-4 py-3 text-right text-indigo-400 text-base" id="rel-total-produtos">R$ 0,00</td></tr>
+                                </tfoot>
+                            </table>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-rose-400 mb-3 border-b border-dark-border pb-2 flex items-center gap-2"><i data-lucide="trending-down" class="w-4 h-4"></i> Despesas Gerais</h4>
-                            <ul id="rel-resumo-despesas" class="space-y-2 text-sm text-gray-400 mb-4"></ul>
-                            <div class="pt-2 border-t border-dark-border flex justify-between font-bold text-white">
-                                <span>Total Gastos:</span><span id="rel-total-despesas" class="text-rose-400">R$ 0,00</span>
+
+                        <!-- Tabela Despesas -->
+                        <div class="bg-dark-card rounded-xl border border-dark-border overflow-hidden">
+                            <div class="p-3 border-b border-dark-border bg-[#0f172a]/50">
+                                <h4 class="font-bold text-rose-400 flex items-center gap-2 uppercase text-sm"><i data-lucide="trending-down" class="w-4 h-4"></i> Despesas</h4>
                             </div>
+                            <table class="w-full text-sm text-left">
+                                <thead class="text-xs text-gray-400 uppercase bg-dark-bg border-b border-dark-border">
+                                    <tr><th class="px-4 py-2">Categoria</th><th class="px-4 py-2 text-right">Subtotal</th></tr>
+                                </thead>
+                                <tbody id="rel-resumo-despesas" class="divide-y divide-dark-border"></tbody>
+                                <tfoot class="bg-dark-bg font-bold border-t border-dark-border">
+                                    <tr><td class="px-4 py-3 text-white">TOTAL</td><td class="px-4 py-3 text-right text-rose-400 text-base" id="rel-total-despesas">R$ 0,00</td></tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
 
-                    <div class="bg-dark-bg border border-dark-border p-6 rounded-xl max-w-2xl mx-auto">
-                        <h4 class="text-xl font-bold text-white mb-6 text-center uppercase tracking-wider">Cálculo Completo de Lucro</h4>
-                        <div class="space-y-3 mb-6">
-                            <div class="flex justify-between items-center text-gray-300">
-                                <span>(+) Receitas de Sócios:</span><span id="rel-fim-socios" class="font-medium text-emerald-400">R$ 0,00</span>
+                    <!-- TABELA MASTER DE RESULTADOS (DRE) -->
+                    <div class="max-w-3xl mx-auto print-break">
+                        <div class="bg-dark-card rounded-xl border border-dark-border overflow-hidden shadow-2xl">
+                            <div class="bg-dark-bg p-4 border-b border-dark-border text-center">
+                                <h4 class="text-xl font-bold text-white uppercase tracking-wider">Cálculo de Resultados</h4>
                             </div>
-                            <div class="flex justify-between items-center text-gray-300">
-                                <span>(+) Venda de Produtos (Bruto):</span><span id="rel-fim-prod" class="font-medium text-indigo-400">R$ 0,00</span>
-                            </div>
-                            <div class="flex justify-between items-center text-gray-300 font-bold border-t border-dark-border pt-2 pb-2">
-                                <span>(=) Faturamento Bruto Total:</span><span id="rel-fim-fat" class="text-white">R$ 0,00</span>
-                            </div>
-                            <div class="flex justify-between items-center text-gray-300">
-                                <span>(-) Despesas Gerais:</span><span id="rel-fim-custos" class="font-medium text-rose-400">R$ 0,00</span>
-                            </div>
-                            <div class="flex justify-between items-center text-gray-300 border-b border-dark-border pb-2">
-                                <span>(-) Custo dos Produtos Vendidos (CMV):</span><span id="rel-fim-custos-prod" class="font-medium text-rose-400">R$ 0,00</span>
-                            </div>
+                            <table class="w-full text-left text-sm md:text-base">
+                                <tbody class="divide-y divide-dark-border">
+                                    <tr class="hover:bg-dark-border/20">
+                                        <td class="px-6 py-4 text-gray-300 font-medium">(+) Receitas de Sócios</td>
+                                        <td class="px-6 py-4 text-right text-emerald-400 font-bold" id="rel-fim-socios">R$ 0,00</td>
+                                    </tr>
+                                    <tr class="hover:bg-dark-border/20">
+                                        <td class="px-6 py-4 text-gray-300 font-medium">(+) Venda de Produtos (Bruto)</td>
+                                        <td class="px-6 py-4 text-right text-indigo-400 font-bold" id="rel-fim-prod">R$ 0,00</td>
+                                    </tr>
+                                    <tr class="bg-dark-bg border-y-2 border-dark-border">
+                                        <td class="px-6 py-4 text-white font-bold uppercase tracking-wider">(=) Faturamento Bruto Total</td>
+                                        <td class="px-6 py-4 text-right text-white font-bold text-lg" id="rel-fim-fat">R$ 0,00</td>
+                                    </tr>
+                                    <tr class="hover:bg-dark-border/20">
+                                        <td class="px-6 py-4 text-gray-300 font-medium">(-) Despesas Gerais</td>
+                                        <td class="px-6 py-4 text-right text-rose-400 font-bold" id="rel-fim-custos">R$ 0,00</td>
+                                    </tr>
+                                    <tr class="hover:bg-dark-border/20">
+                                        <td class="px-6 py-4 text-gray-300 font-medium">(-) CMV (Custo dos Produtos Vendidos)</td>
+                                        <td class="px-6 py-4 text-right text-rose-400 font-bold" id="rel-fim-custos-prod">R$ 0,00</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="bg-[#0f172a] border-t-4 border-dark-border">
+                                    <tr>
+                                        <td class="px-6 py-6 text-brand-400 font-bold text-xl uppercase tracking-widest">(=) Lucro Líquido Real</td>
+                                        <td class="px-6 py-6 text-right text-brand-400 font-bold text-2xl" id="rel-fim-lucro">R$ 0,00</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
-                        <div class="flex justify-between items-center mb-6 text-brand-400 font-bold text-2xl border-y border-dark-border py-4">
-                            <span>(=) Lucro Líquido Real:</span>
-                            <span id="rel-fim-lucro">R$ 0,00</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-dark-card p-4 rounded-lg text-center border border-dark-border">
-                                <p class="text-sm text-gray-400 mb-1">Pró-labore Sócio 1 (50%)</p>
-                                <p id="rel-socio1" class="font-bold text-white text-xl">R$ 0,00</p>
-                            </div>
-                            <div class="bg-dark-card p-4 rounded-lg text-center border border-dark-border">
-                                <p class="text-sm text-gray-400 mb-1">Pró-labore Sócio 2 (50%)</p>
-                                <p id="rel-socio2" class="font-bold text-white text-xl">R$ 0,00</p>
-                            </div>
+
+                        <!-- TABELA PRÓ-LABORE -->
+                        <div class="mt-8 bg-dark-card rounded-xl border border-dark-border overflow-hidden">
+                            <table class="w-full text-center">
+                                <thead class="bg-dark-bg border-b border-dark-border">
+                                    <tr><th colspan="2" class="py-3 text-white font-bold uppercase tracking-wider">Divisão de Pró-labore</th></tr>
+                                </thead>
+                                <tbody class="divide-x divide-dark-border">
+                                    <tr>
+                                        <td class="py-6 px-4 w-1/2 hover:bg-dark-border/20 transition-colors">
+                                            <p class="text-sm text-gray-400 mb-2 font-medium uppercase">Sócio 1 (50%)</p>
+                                            <p class="text-2xl font-bold text-white" id="rel-socio1">R$ 0,00</p>
+                                        </td>
+                                        <td class="py-6 px-4 w-1/2 hover:bg-dark-border/20 transition-colors">
+                                            <p class="text-sm text-gray-400 mb-2 font-medium uppercase">Sócio 2 (50%)</p>
+                                            <p class="text-2xl font-bold text-white" id="rel-socio2">R$ 0,00</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -844,6 +896,7 @@
             const lucroLiquido = faturamentoBruto - custosTotais;
             const proLabore = lucroLiquido > 0 ? lucroLiquido / 2 : 0;
 
+            // Dashboard
             document.getElementById('dash-faturamento-socios').textContent = formatMoney(totRec);
             document.getElementById('dash-faturamento-produtos').textContent = formatMoney(totProdVenda);
             document.getElementById('dash-despesas').textContent = formatMoney(custosTotais); 
@@ -857,19 +910,22 @@
             document.getElementById('lista-produtos').innerHTML = htmlProd.join('') || '<tr><td colspan="8" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
             document.getElementById('lista-despesas').innerHTML = htmlDesp.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
 
+            // Relatórios
             document.getElementById('rel-mes-texto').textContent = currentMonthFilter.split('-').reverse().join('/');
             document.getElementById('rel-setor-texto').textContent = currentSectorFilter === 'Todos' ? 'Todos os Setores' : currentSectorFilter;
             
-            const renderResumo = (obj, idList, idTotal, totalVal) => {
+            const renderTabelaResumo = (obj, idTbody, idTotal, totalVal) => {
                 let h = '';
-                for(let k in obj) h += `<li class="flex justify-between border-b border-dark-border/30 pb-1 text-gray-400"><span>${k}</span> <strong class="text-white">${formatMoney(obj[k])}</strong></li>`;
-                document.getElementById(idList).innerHTML = h || '<li class="text-gray-500">Sem dados</li>';
+                for(let k in obj) {
+                    h += `<tr class="hover:bg-dark-border/30"><td class="px-4 py-2 text-gray-300 font-medium">${k}</td><td class="px-4 py-2 text-right font-medium text-white">${formatMoney(obj[k])}</td></tr>`;
+                }
+                document.getElementById(idTbody).innerHTML = h || '<tr><td colspan="2" class="px-4 py-4 text-center text-gray-500">Sem registros neste período.</td></tr>';
                 document.getElementById(idTotal).textContent = formatMoney(totalVal);
             };
 
-            renderResumo(resRec, 'rel-resumo-receitas', 'rel-total-receitas', totRec);
-            renderResumo(resProd, 'rel-resumo-produtos', 'rel-total-produtos', totProdVenda);
-            renderResumo(resDesp, 'rel-resumo-despesas', 'rel-total-despesas', totDesp);
+            renderTabelaResumo(resRec, 'rel-resumo-receitas', 'rel-total-receitas', totRec);
+            renderTabelaResumo(resProd, 'rel-resumo-produtos', 'rel-total-produtos', totProdVenda);
+            renderTabelaResumo(resDesp, 'rel-resumo-despesas', 'rel-total-despesas', totDesp);
 
             document.getElementById('rel-fim-socios').textContent = formatMoney(totRec);
             document.getElementById('rel-fim-prod').textContent = formatMoney(totProdVenda);
