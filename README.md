@@ -2,6 +2,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark only"> <!-- Bloqueia navegadores de inverterem o tema -->
+    <meta name="theme-color" content="#0f172a">
     <title>PowFit Pay - Gestão de Clubes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -18,28 +20,38 @@
         }
     </script>
     <style>
-        :root { color-scheme: dark; }
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        :root { color-scheme: dark only !important; }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a !important; color: #e2e8f0 !important; }
         
-        /* Forçar modo dark até na hora de gerar o PDF/Imprimir */
+        /* ---------------------------------------------------
+           CORREÇÃO DEFINITIVA PARA TABELAS NO MOBILE 
+           Força o fundo escuro contra qualquer navegador
+           --------------------------------------------------- */
+        table, .overflow-x-auto { background-color: #0f172a !important; border-color: #334155 !important; }
+        thead, th { background-color: #1e293b !important; color: #94a3b8 !important; border-color: #334155 !important; }
+        tbody, tr { background-color: #0f172a !important; border-color: #334155 !important; }
+        td { background-color: #0f172a !important; border-color: #334155 !important; color: #e2e8f0 !important; }
+        
+        /* Efeito de hover nas linhas */
+        tr:hover, tr:hover td { background-color: #1e293b !important; }
+
+        /* Proteção das cores dos textos para não ficarem brancas/invisíveis */
+        td.text-emerald-400, .text-emerald-400 { color: #34d399 !important; }
+        td.text-indigo-400, .text-indigo-400 { color: #818cf8 !important; }
+        td.text-rose-400, .text-rose-400 { color: #fb7185 !important; }
+        td.text-blue-400, .text-blue-400 { color: #60a5fa !important; }
+        td.text-white, .text-white { color: #ffffff !important; }
+        td.text-gray-400, .text-gray-400 { color: #94a3b8 !important; }
+        
         @media print {
-            body { 
-                background-color: #0f172a !important; 
-                color: #e2e8f0 !important;
-                -webkit-print-color-adjust: exact !important; 
-                print-color-adjust: exact !important; 
-            }
+            body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; background-color: #0f172a !important; }
             .no-print { display: none !important; }
-            .print-container { width: 100% !important; margin: 0 !important; padding: 0 !important; background-color: #0f172a !important; }
-            .bg-dark-card { background-color: #1e293b !important; border-color: #334155 !important; }
-            .bg-dark-bg { background-color: #0f172a !important; }
+            .print-container { width: 100% !important; margin: 0 !important; padding: 0 !important; }
             * { box-shadow: none !important; }
-            table, thead, tbody, tr, th, td { border-color: #334155 !important; background-color: transparent !important; color: inherit !important; }
-            thead { background-color: #0f172a !important; }
-            tbody tr { background-color: #1e293b !important; }
+            #print-area { background-color: #0f172a !important; border-color: #334155 !important; }
         }
 
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
@@ -254,9 +266,9 @@
 
                 <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
                     <h3 class="text-lg font-bold text-white mb-4">Transações Recentes</h3>
-                    <div class="overflow-x-auto bg-dark-bg rounded-lg border border-dark-border">
-                        <table class="w-full text-sm text-left text-gray-200">
-                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
+                    <div class="overflow-x-auto rounded-lg border border-dark-border">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs uppercase">
                                 <tr>
                                     <th class="px-4 py-3 rounded-tl-lg">Tipo</th>
                                     <th class="px-4 py-3">Descrição</th>
@@ -265,7 +277,7 @@
                                     <th class="px-4 py-3 rounded-tr-lg text-right">Valor Final</th>
                                 </tr>
                             </thead>
-                            <tbody id="dash-table-recentes" class="divide-y divide-dark-border bg-dark-bg"></tbody>
+                            <tbody id="dash-table-recentes" class="divide-y divide-dark-border"></tbody>
                         </table>
                     </div>
                 </div>
@@ -311,13 +323,13 @@
                 </div>
 
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Mensalidades do Mês</h3></div>
-                    <div class="overflow-x-auto bg-dark-bg">
-                        <table class="w-full text-sm text-left text-gray-200">
-                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
+                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Mensalidades do Mês</h3></div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs uppercase">
                                 <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Sócio</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ações</th></tr>
                             </thead>
-                            <tbody id="lista-receitas" class="divide-y divide-dark-border bg-dark-bg"></tbody>
+                            <tbody id="lista-receitas" class="divide-y divide-dark-border"></tbody>
                         </table>
                     </div>
                 </div>
@@ -367,10 +379,10 @@
                 </div>
                 
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Vendas do Mês</h3></div>
-                    <div class="overflow-x-auto bg-dark-bg">
-                        <table class="w-full text-sm text-left text-gray-200">
-                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
+                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Vendas do Mês</h3></div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs uppercase">
                                 <tr>
                                     <th class="px-6 py-3">Data</th>
                                     <th class="px-6 py-3">Produto</th>
@@ -382,7 +394,7 @@
                                     <th class="px-6 py-3 text-center">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="lista-produtos" class="divide-y divide-dark-border bg-dark-bg"></tbody>
+                            <tbody id="lista-produtos" class="divide-y divide-dark-border"></tbody>
                         </table>
                     </div>
                 </div>
@@ -427,13 +439,13 @@
                     </form>
                 </div>
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Gastos do Mês</h3></div>
-                    <div class="overflow-x-auto bg-dark-bg">
-                        <table class="w-full text-sm text-left text-gray-200">
-                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
+                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Gastos do Mês</h3></div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs uppercase">
                                 <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Descrição</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ações</th></tr>
                             </thead>
-                            <tbody id="lista-despesas" class="divide-y divide-dark-border bg-dark-bg"></tbody>
+                            <tbody id="lista-despesas" class="divide-y divide-dark-border"></tbody>
                         </table>
                     </div>
                 </div>
@@ -490,19 +502,19 @@
                         <h4 class="text-xl font-bold text-white mb-6 text-center uppercase tracking-wider">Cálculo Completo de Lucro</h4>
                         <div class="space-y-3 mb-6">
                             <div class="flex justify-between items-center text-gray-300">
-                                <span>(+) Receitas de Sócios:</span><span id="rel-fim-socios" class="font-medium">R$ 0,00</span>
+                                <span>(+) Receitas de Sócios:</span><span id="rel-fim-socios" class="font-medium text-emerald-400">R$ 0,00</span>
                             </div>
                             <div class="flex justify-between items-center text-gray-300">
-                                <span>(+) Venda de Produtos (Bruto):</span><span id="rel-fim-prod" class="font-medium">R$ 0,00</span>
+                                <span>(+) Venda de Produtos (Bruto):</span><span id="rel-fim-prod" class="font-medium text-indigo-400">R$ 0,00</span>
                             </div>
                             <div class="flex justify-between items-center text-gray-300 font-bold border-t border-dark-border pt-2 pb-2">
                                 <span>(=) Faturamento Bruto Total:</span><span id="rel-fim-fat" class="text-white">R$ 0,00</span>
                             </div>
-                            <div class="flex justify-between items-center text-gray-300 text-rose-400">
-                                <span>(-) Despesas Gerais:</span><span id="rel-fim-custos" class="font-medium">R$ 0,00</span>
+                            <div class="flex justify-between items-center text-gray-300">
+                                <span>(-) Despesas Gerais:</span><span id="rel-fim-custos" class="font-medium text-rose-400">R$ 0,00</span>
                             </div>
-                            <div class="flex justify-between items-center text-gray-300 text-rose-400 border-b border-dark-border pb-2">
-                                <span>(-) Custo dos Produtos Vendidos (CMV):</span><span id="rel-fim-custos-prod" class="font-medium">R$ 0,00</span>
+                            <div class="flex justify-between items-center text-gray-300 border-b border-dark-border pb-2">
+                                <span>(-) Custo dos Produtos Vendidos (CMV):</span><span id="rel-fim-custos-prod" class="font-medium text-rose-400">R$ 0,00</span>
                             </div>
                         </div>
                         <div class="flex justify-between items-center mb-6 text-brand-400 font-bold text-2xl border-y border-dark-border py-4">
@@ -624,7 +636,6 @@
 
         lucide.createIcons();
 
-        // Modais Customizados Dark
         window.customPrompt = (message) => {
             return new Promise((resolve) => {
                 const modal = document.getElementById('custom-prompt-modal');
@@ -805,20 +816,19 @@
                         <button onclick="deletarTransacao('${t.id}')" class="text-rose-400 hover:text-rose-300 p-1" title="Excluir"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>`;
 
-                // Forçando class "bg-dark-card" direto em cada TR para que navegadores mobiles não coloquem fundo branco.
                 if (t.type === 'income') { 
                     totRec += t.amount; resRec[t.category] = (resRec[t.category] || 0) + t.amount; 
-                    htmlRec.push(`<tr class="bg-dark-card hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-emerald-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
+                    htmlRec.push(`<tr><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-emerald-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
                 }
                 else if (t.type === 'product') { 
                     const custo = t.costAmount || 0; const lucroItem = t.amount - custo;
                     totProdVenda += t.amount; totProdCusto += custo;
                     resProd[t.category] = (resProd[t.category] || 0) + t.amount; 
-                    htmlProd.push(`<tr class="bg-dark-card hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-indigo-400">${t.category}</td><td class="px-6 py-3 text-right text-rose-400">${formatMoney(custo)}</td><td class="px-6 py-3 text-right font-bold text-indigo-400">${formatMoney(t.amount)}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(lucroItem)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
+                    htmlProd.push(`<tr><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-indigo-400">${t.category}</td><td class="px-6 py-3 text-right text-rose-400">${formatMoney(custo)}</td><td class="px-6 py-3 text-right font-bold text-indigo-400">${formatMoney(t.amount)}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(lucroItem)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
                 }
                 else if (t.type === 'expense') { 
                     totDesp += t.amount; resDesp[t.category] = (resDesp[t.category] || 0) + t.amount; 
-                    htmlDesp.push(`<tr class="bg-dark-card hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-rose-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-rose-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
+                    htmlDesp.push(`<tr><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-rose-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-rose-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
                 }
             });
 
@@ -826,7 +836,7 @@
                 const colors = { income: 'emerald', product: 'indigo', expense: 'rose' };
                 const c = colors[t.type];
                 const typeName = t.type === 'income' ? 'Sócio' : t.type === 'product' ? 'Produto' : 'Despesa';
-                htmlDash.push(`<tr class="bg-dark-bg border-b border-dark-border/50 last:border-0"><td class="px-4 py-3 text-gray-400 text-xs uppercase">${typeName}</td><td class="px-4 py-3 font-medium text-white">${t.description}</td><td class="px-4 py-3 text-gray-400">${t.category}</td><td class="px-4 py-3 text-gray-400 text-xs">${t.sector || '-'}</td><td class="px-4 py-3 text-right font-bold text-${c}-400">${formatMoney(t.amount)}</td></tr>`);
+                htmlDash.push(`<tr><td class="px-4 py-3 text-gray-400 text-xs uppercase">${typeName}</td><td class="px-4 py-3 font-medium text-white">${t.description}</td><td class="px-4 py-3 text-gray-400">${t.category}</td><td class="px-4 py-3 text-gray-400 text-xs">${t.sector || '-'}</td><td class="px-4 py-3 text-right font-bold text-${c}-400">${formatMoney(t.amount)}</td></tr>`);
             });
 
             const faturamentoBruto = totRec + totProdVenda;
@@ -842,19 +852,18 @@
             document.getElementById('dash-socio1').textContent = formatMoney(proLabore);
             document.getElementById('dash-socio2').textContent = formatMoney(proLabore);
 
-            // Respostas de tabelas vazias forçando bg dark
-            document.getElementById('dash-table-recentes').innerHTML = htmlDash.join('') || '<tr class="bg-dark-bg"><td colspan="5" class="px-4 py-3 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
-            document.getElementById('lista-receitas').innerHTML = htmlRec.join('') || '<tr class="bg-dark-card"><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
-            document.getElementById('lista-produtos').innerHTML = htmlProd.join('') || '<tr class="bg-dark-card"><td colspan="8" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
-            document.getElementById('lista-despesas').innerHTML = htmlDesp.join('') || '<tr class="bg-dark-card"><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
+            document.getElementById('dash-table-recentes').innerHTML = htmlDash.join('') || '<tr><td colspan="5" class="px-4 py-3 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
+            document.getElementById('lista-receitas').innerHTML = htmlRec.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
+            document.getElementById('lista-produtos').innerHTML = htmlProd.join('') || '<tr><td colspan="8" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
+            document.getElementById('lista-despesas').innerHTML = htmlDesp.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
 
             document.getElementById('rel-mes-texto').textContent = currentMonthFilter.split('-').reverse().join('/');
             document.getElementById('rel-setor-texto').textContent = currentSectorFilter === 'Todos' ? 'Todos os Setores' : currentSectorFilter;
             
             const renderResumo = (obj, idList, idTotal, totalVal) => {
                 let h = '';
-                for(let k in obj) h += `<li class="flex justify-between border-b border-dark-border/30 pb-1 text-gray-200"><span>${k}</span> <strong>${formatMoney(obj[k])}</strong></li>`;
-                document.getElementById(idList).innerHTML = h || '<li class="text-gray-400">Sem dados</li>';
+                for(let k in obj) h += `<li class="flex justify-between border-b border-dark-border/30 pb-1 text-gray-400"><span>${k}</span> <strong class="text-white">${formatMoney(obj[k])}</strong></li>`;
+                document.getElementById(idList).innerHTML = h || '<li class="text-gray-500">Sem dados</li>';
                 document.getElementById(idTotal).textContent = formatMoney(totalVal);
             };
 
