@@ -10,21 +10,8 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            400: '#60a5fa',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#1e3a8a',
-                            950: '#172554',
-                        },
-                        dark: {
-                            bg: '#0f172a',
-                            card: '#1e293b',
-                            border: '#334155'
-                        }
+                        brand: { 50: '#eff6ff', 100: '#dbeafe', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 900: '#1e3a8a', 950: '#172554' },
+                        dark: { bg: '#0f172a', card: '#1e293b', border: '#334155' }
                     }
                 }
             }
@@ -32,18 +19,15 @@
     </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
-        
         @media print {
             body { background-color: white !important; color: black !important; }
             .no-print { display: none !important; }
-            .print-only { display: block !important; }
             .print-container { width: 100% !important; margin: 0 !important; padding: 0 !important; }
             .dark\:bg-dark-card { background-color: white !important; border: 1px solid #e5e7eb !important; }
             .text-white, .dark\:text-gray-300, .text-gray-400 { color: black !important; }
             .border-dark-border { border-color: #e5e7eb !important; }
             * { box-shadow: none !important; }
         }
-
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -152,12 +136,10 @@
                             <i data-lucide="map-pin" class="w-4 h-4 text-gray-400"></i>
                             <select id="filtro-setor-global" class="bg-transparent text-white font-medium focus:outline-none cursor-pointer">
                                 <option value="Todos">Todos os Setores</option>
-                                <!-- Preenchido via JS -->
                             </select>
                         </div>
                     </div>
                     
-                    <!-- Novo botão de Sair no cabeçalho -->
                     <button id="btn-logout-header" title="Sair da Conta" class="bg-dark-card border border-dark-border p-2.5 rounded-xl text-rose-400 hover:bg-rose-500 hover:text-white transition-colors shadow-sm flex items-center justify-center">
                         <i data-lucide="log-out" class="w-5 h-5"></i>
                     </button>
@@ -177,7 +159,6 @@
 
             <!-- DASHBOARD SECTION -->
             <section id="sec-dashboard" class="page-section">
-                <!-- Cards de Resumo -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <div class="bg-dark-card p-6 rounded-2xl border border-dark-border">
                         <div class="flex justify-between items-start">
@@ -217,7 +198,6 @@
                     </div>
                 </div>
 
-                <!-- Divisão de Sócios -->
                 <div class="bg-gradient-to-r from-dark-card to-brand-950/20 p-6 rounded-2xl border border-dark-border mb-8">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <i data-lucide="pie-chart" class="w-5 h-5 text-brand-400"></i> Pró-labore Sócios do Clube (50/50)
@@ -247,9 +227,7 @@
                                     <th class="px-4 py-3 rounded-r-lg text-right">Valor</th>
                                 </tr>
                             </thead>
-                            <tbody id="dash-table-recentes" class="divide-y divide-dark-border">
-                                <!-- Preenchido via JS -->
-                            </tbody>
+                            <tbody id="dash-table-recentes" class="divide-y divide-dark-border"></tbody>
                         </table>
                     </div>
                 </div>
@@ -266,31 +244,36 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Setor</label>
-                            <select id="rec-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                            <div class="flex gap-2">
+                                <select id="rec-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                                <button type="button" onclick="quickAddConfig('sectors', 'Digite o nome do novo Setor:', 'rec-setor')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap" title="Adicionar novo setor">+ Novo</button>
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria/Pacote</label>
-                            <select id="rec-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria (Pacote)</label>
+                            <div class="flex gap-2">
+                                <select id="rec-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                                <button type="button" onclick="quickAddConfig('catIncome', 'Digite a nova Categoria de Sócio:', 'rec-categoria')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap" title="Adicionar nova categoria">+ Novo</button>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Valor (R$)</label>
                             <input type="number" id="rec-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="0.00">
                         </div>
                         <div>
-                            <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
-                                <i data-lucide="plus" class="w-4 h-4"></i> Adicionar
+                            <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
+                                <i data-lucide="check" class="w-4 h-4"></i> Salvar
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Tabela genérica para transações da aba -->
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
                     <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Mensalidades do Mês</h3></div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead class="text-xs text-gray-400 uppercase bg-dark-bg">
-                                <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Sócio</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Pacote</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ação</th></tr>
+                                <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Sócio</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ação</th></tr>
                             </thead>
                             <tbody id="lista-receitas" class="divide-y divide-dark-border"></tbody>
                         </table>
@@ -309,19 +292,25 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Setor</label>
-                            <select id="prod-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                            <div class="flex gap-2">
+                                <select id="prod-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                                <button type="button" onclick="quickAddConfig('sectors', 'Digite o nome do novo Setor:', 'prod-setor')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria</label>
-                            <select id="prod-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria (Produto)</label>
+                            <div class="flex gap-2">
+                                <select id="prod-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                                <button type="button" onclick="quickAddConfig('catProduct', 'Digite a nova Categoria de Produto:', 'prod-categoria')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Valor Total (R$)</label>
                             <input type="number" id="prod-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="0.00">
                         </div>
                         <div>
-                            <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
-                                <i data-lucide="plus" class="w-4 h-4"></i> Adicionar
+                            <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
+                                <i data-lucide="check" class="w-4 h-4"></i> Salvar
                             </button>
                         </div>
                     </form>
@@ -350,19 +339,25 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Setor</label>
-                            <select id="desp-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                            <div class="flex gap-2">
+                                <select id="desp-setor" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                                <button type="button" onclick="quickAddConfig('sectors', 'Digite o nome do novo Setor:', 'desp-setor')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria</label>
-                            <select id="desp-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Categoria (Despesa)</label>
+                            <div class="flex gap-2">
+                                <select id="desp-categoria" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+                                <button type="button" onclick="quickAddConfig('catExpense', 'Digite a nova Categoria de Despesa:', 'desp-categoria')" class="bg-brand-600 hover:bg-brand-500 text-white px-3 text-sm rounded-lg font-bold transition-colors whitespace-nowrap">+ Novo</button>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Valor (R$)</label>
                             <input type="number" id="desp-valor" step="0.01" required class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="0.00">
                         </div>
                         <div>
-                            <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
-                                <i data-lucide="plus" class="w-4 h-4"></i> Adicionar
+                            <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
+                                <i data-lucide="check" class="w-4 h-4"></i> Salvar
                             </button>
                         </div>
                     </form>
@@ -383,13 +378,12 @@
             <!-- RELATÓRIOS SECTION -->
             <section id="sec-relatorios" class="page-section hidden">
                 <div class="flex justify-end mb-6 no-print">
-                    <button onclick="window.print()" class="bg-brand-600 hover:bg-brand-500 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors font-medium">
+                    <button onclick="window.print()" class="bg-brand-600 hover:bg-brand-500 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors font-medium shadow-lg">
                         <i data-lucide="printer" class="w-5 h-5"></i> Imprimir Relatório
                     </button>
                 </div>
 
                 <div class="bg-dark-card rounded-2xl border border-dark-border p-8 print:border-none print:shadow-none print:bg-white" id="print-area">
-                    
                     <div class="text-center mb-8 border-b border-dark-border print:border-gray-300 pb-6">
                         <h2 id="rel-club-name" class="text-3xl font-bold text-white print:text-black uppercase">NOME DO CLUBE</h2>
                         <p id="rel-club-cnpj" class="text-gray-400 print:text-gray-600 mt-1">CNPJ: 00.000.000/0000-00</p>
@@ -405,7 +399,6 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                        <!-- Sócios -->
                         <div>
                             <h4 class="font-bold text-emerald-400 print:text-black mb-3 border-b border-dark-border print:border-gray-300 pb-2 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Receitas de Sócios</h4>
                             <ul id="rel-resumo-receitas" class="space-y-2 text-sm text-gray-400 print:text-gray-700 mb-4"></ul>
@@ -413,7 +406,6 @@
                                 <span>Total Sócios:</span><span id="rel-total-receitas" class="text-emerald-400 print:text-black">R$ 0,00</span>
                             </div>
                         </div>
-                        <!-- Produtos -->
                         <div>
                             <h4 class="font-bold text-indigo-400 print:text-black mb-3 border-b border-dark-border print:border-gray-300 pb-2 flex items-center gap-2"><i data-lucide="shopping-bag" class="w-4 h-4"></i> Venda de Produtos</h4>
                             <ul id="rel-resumo-produtos" class="space-y-2 text-sm text-gray-400 print:text-gray-700 mb-4"></ul>
@@ -421,7 +413,6 @@
                                 <span>Total Produtos:</span><span id="rel-total-produtos" class="text-indigo-400 print:text-black">R$ 0,00</span>
                             </div>
                         </div>
-                        <!-- Despesas -->
                         <div>
                             <h4 class="font-bold text-rose-400 print:text-black mb-3 border-b border-dark-border print:border-gray-300 pb-2 flex items-center gap-2"><i data-lucide="trending-down" class="w-4 h-4"></i> Despesas</h4>
                             <ul id="rel-resumo-despesas" class="space-y-2 text-sm text-gray-400 print:text-gray-700 mb-4"></ul>
@@ -431,10 +422,8 @@
                         </div>
                     </div>
 
-                    <!-- Resultado Final -->
                     <div class="bg-dark-bg print:bg-white border border-dark-border print:border-gray-300 p-6 rounded-xl max-w-2xl mx-auto">
                         <h4 class="text-xl font-bold text-white print:text-black mb-6 text-center uppercase tracking-wider">Fechamento do Período</h4>
-                        
                         <div class="space-y-3 mb-6">
                             <div class="flex justify-between items-center text-gray-300 print:text-gray-800">
                                 <span>(+) Receitas de Sócios:</span><span id="rel-fim-socios" class="font-medium">R$ 0,00</span>
@@ -449,12 +438,10 @@
                                 <span>(-) Custos Totais (Despesas):</span><span id="rel-fim-custos" class="font-medium">R$ 0,00</span>
                             </div>
                         </div>
-
                         <div class="flex justify-between items-center mb-6 text-brand-400 print:text-black font-bold text-2xl border-y border-dark-border print:border-gray-400 py-4">
                             <span>(=) Lucro Líquido Final:</span>
                             <span id="rel-fim-lucro">R$ 0,00</span>
                         </div>
-
                         <div class="grid grid-cols-2 gap-4">
                             <div class="bg-dark-card print:bg-gray-100 p-4 rounded-lg text-center border border-dark-border print:border-gray-300">
                                 <p class="text-sm text-gray-400 print:text-gray-600 mb-1">Pró-labore Sócio 1 (50%)</p>
@@ -473,7 +460,6 @@
             <section id="sec-configuracoes" class="page-section hidden no-print">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     
-                    <!-- Dados do Clube -->
                     <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
                         <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="building" class="w-5 h-5 text-brand-400"></i> Dados do Clube</h3>
                         <div class="space-y-4 mb-4">
@@ -489,54 +475,47 @@
                         <button onclick="salvarConfigGeral()" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-2 rounded-lg transition-colors">Salvar Dados</button>
                     </div>
 
-                    <!-- Setores -->
                     <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
                         <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5 text-amber-400"></i> Gerenciar Setores</h3>
-                        <p class="text-sm text-gray-400 mb-4">Adicione os setores ou unidades do seu clube. (Obrigatório para registrar transações).</p>
                         <div class="flex gap-2 mb-4">
-                            <input type="text" id="novo-setor" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Sede Principal, Bairro X">
+                            <input type="text" id="novo-setor" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Sede Principal, Quadra">
                             <button onclick="addConfigItem('sectors', 'novo-setor')" class="bg-amber-500 text-white px-4 rounded-lg hover:bg-amber-600 font-bold">+</button>
                         </div>
                         <ul id="lista-conf-setores" class="space-y-2 max-h-40 overflow-y-auto"></ul>
                     </div>
 
-                    <!-- Categorias Sócios -->
                     <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
-                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="users" class="w-5 h-5 text-emerald-400"></i> Categorias: Sócios/Mensalidades</h3>
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="users" class="w-5 h-5 text-emerald-400"></i> Categorias: Sócios</h3>
                         <div class="flex gap-2 mb-4">
-                            <input type="text" id="nova-cat-rec" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Pacote Trimestral, Diária">
+                            <input type="text" id="nova-cat-rec" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Associado Mensal">
                             <button onclick="addConfigItem('catIncome', 'nova-cat-rec')" class="bg-emerald-500 text-white px-4 rounded-lg hover:bg-emerald-600 font-bold">+</button>
                         </div>
                         <ul id="lista-conf-rec" class="space-y-2 max-h-40 overflow-y-auto"></ul>
                     </div>
 
-                    <!-- Categorias Produtos -->
                     <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
                         <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-400"></i> Categorias: Produtos</h3>
                         <div class="flex gap-2 mb-4">
-                            <input type="text" id="nova-cat-prod" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Suplementos, Roupas">
+                            <input type="text" id="nova-cat-prod" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Roupas, Bar">
                             <button onclick="addConfigItem('catProduct', 'nova-cat-prod')" class="bg-indigo-500 text-white px-4 rounded-lg hover:bg-indigo-600 font-bold">+</button>
                         </div>
                         <ul id="lista-conf-prod" class="space-y-2 max-h-40 overflow-y-auto"></ul>
                     </div>
 
-                    <!-- Categorias Despesas -->
                     <div class="bg-dark-card rounded-2xl border border-dark-border p-6 md:col-span-2">
                         <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="trending-down" class="w-5 h-5 text-rose-400"></i> Categorias: Despesas</h3>
                         <div class="flex gap-2 mb-4 max-w-md">
-                            <input type="text" id="nova-cat-desp" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Manutenção, Limpeza">
+                            <input type="text" id="nova-cat-desp" class="flex-1 bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:outline-none" placeholder="Ex: Manutenção, Água">
                             <button onclick="addConfigItem('catExpense', 'nova-cat-desp')" class="bg-rose-500 text-white px-4 rounded-lg hover:bg-rose-600 font-bold">+</button>
                         </div>
                         <ul id="lista-conf-desp" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-40 overflow-y-auto"></ul>
                     </div>
-
                 </div>
             </section>
-
         </main>
     </div>
 
-    <!-- Scripts (Firebase + Lógica do App) -->
+    <!-- Scripts (Firebase + Lógica) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -559,20 +538,18 @@
         let currentUser = null;
         let transactions = [];
         
-        // Estado inicial de configurações (listas vazias para forçar o usuário a criar)
+        // Estado INICIAL exato pedido por você
         let appSettings = { 
             name: 'Nome do Clube', 
             cnpj: '',
-            sectors: [],
-            catIncome: ['Mensalidade 1 Mês', 'Diária'],
-            catProduct: ['Roupas', 'Suplementos'],
-            catExpense: ['Limpeza', 'Energia']
+            sectors: ['Sede Principal'],
+            catIncome: ['Associado(a)', 'Associado Temporário (Visitante)'],
+            catProduct: [], 
+            catExpense: []  
         };
 
         let unsubTransactions = null;
         let unsubSettings = null;
-        
-        // Filtros Globais
         let currentMonthFilter = new Date().toISOString().slice(0, 7);
         let currentSectorFilter = 'Todos';
 
@@ -581,7 +558,6 @@
 
         lucide.createIcons();
 
-        // Inicialização de UI
         document.getElementById('filtro-mes').value = currentMonthFilter;
         document.getElementById('filtro-mes').addEventListener('change', (e) => { currentMonthFilter = e.target.value; updateUI(); });
         document.getElementById('filtro-setor-global').addEventListener('change', (e) => { currentSectorFilter = e.target.value; updateUI(); });
@@ -589,26 +565,18 @@
         window.navigate = (targetId) => {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(`sec-${targetId}`).classList.remove('hidden');
-            
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                if(btn.dataset.target === targetId) {
-                    btn.classList.add('bg-dark-border', 'text-white'); btn.classList.remove('text-gray-400');
-                } else {
-                    btn.classList.remove('bg-dark-border', 'text-white'); btn.classList.add('text-gray-400');
-                }
+                if(btn.dataset.target === targetId) { btn.classList.add('bg-dark-border', 'text-white'); btn.classList.remove('text-gray-400'); } 
+                else { btn.classList.remove('bg-dark-border', 'text-white'); btn.classList.add('text-gray-400'); }
             });
-
-            const titles = { 'dashboard': 'Dashboard', 'receitas': 'Sócios / Mensalidades', 'produtos': 'Venda de Produtos', 'despesas': 'Despesas / Gastos', 'relatorios': 'Relatórios', 'configuracoes': 'Configurações do Clube' };
+            const titles = { 'dashboard': 'Dashboard', 'receitas': 'Sócios / Mensalidades', 'produtos': 'Venda de Produtos', 'despesas': 'Despesas / Gastos', 'relatorios': 'Relatórios', 'configuracoes': 'Configurações' };
             document.getElementById('page-title').textContent = titles[targetId];
         };
 
-        // --- AUTH ---
         const initAuth = async () => {
             if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                 await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
-            }
+            } else { await signInAnonymously(auth); }
         };
 
         document.getElementById('btn-google-login').addEventListener('click', async () => {
@@ -616,7 +584,7 @@
             try {
                 document.getElementById('login-loading').classList.remove('hidden');
                 await signInWithPopup(auth, provider);
-            } catch (error) { console.error("Login erro:", error); } 
+            } catch (error) { console.error("Erro:", error); } 
             finally { document.getElementById('login-loading').classList.add('hidden'); }
         });
 
@@ -648,7 +616,6 @@
 
         initAuth();
 
-        // --- DADOS FIRESTORE ---
         const loadUserData = () => {
             if (!currentUser) return;
             const uid = currentUser.uid;
@@ -673,24 +640,17 @@
         };
 
         const applySettingsToUI = () => {
-            // Textos
             document.getElementById('club-header-name').textContent = appSettings.name;
             document.getElementById('rel-club-name').textContent = appSettings.name;
             document.getElementById('rel-club-cnpj').textContent = appSettings.cnpj ? `CNPJ: ${appSettings.cnpj}` : '';
             document.getElementById('conf-nome').value = appSettings.name || '';
             document.getElementById('conf-cnpj').value = appSettings.cnpj || '';
 
-            // Aviso Setores
             const aviso = document.getElementById('aviso-config');
-            if(!appSettings.sectors || appSettings.sectors.length === 0) {
-                aviso.classList.remove('hidden');
-            } else {
-                aviso.classList.add('hidden');
-            }
+            if(!appSettings.sectors || appSettings.sectors.length === 0) aviso.classList.remove('hidden');
+            else aviso.classList.add('hidden');
 
-            // Atualiza Selects UI
             updateSelectOptions('filtro-setor-global', ['Todos', ...(appSettings.sectors || [])]);
-            
             updateSelectOptions('rec-setor', appSettings.sectors || []);
             updateSelectOptions('prod-setor', appSettings.sectors || []);
             updateSelectOptions('desp-setor', appSettings.sectors || []);
@@ -699,83 +659,45 @@
             updateSelectOptions('prod-categoria', appSettings.catProduct || []);
             updateSelectOptions('desp-categoria', appSettings.catExpense || []);
 
-            // Mantém a seleção global anterior se existir
             document.getElementById('filtro-setor-global').value = currentSectorFilter;
-
             renderConfigLists();
-            updateUI(); // Força update pra refletir dados se mudou config
+            updateUI();
         };
 
         const updateSelectOptions = (elementId, optionsArray) => {
             const el = document.getElementById(elementId);
-            const val = el.value; // guarda valor antigo
-            el.innerHTML = optionsArray.length === 0 ? '<option value="" disabled selected>Nenhuma opção cadastrada</option>' : '';
+            const val = el.value; 
+            el.innerHTML = optionsArray.length === 0 ? '<option value="" disabled selected>Clique em + Novo</option>' : '';
             optionsArray.forEach(opt => {
-                if(opt === 'Todos') {
-                    el.innerHTML += `<option value="${opt}">Todos os Setores</option>`;
-                } else {
-                    el.innerHTML += `<option value="${opt}">${opt}</option>`;
-                }
+                if(opt === 'Todos') el.innerHTML += `<option value="${opt}">Todos os Setores</option>`;
+                else el.innerHTML += `<option value="${opt}">${opt}</option>`;
             });
             if(optionsArray.includes(val)) el.value = val;
         };
 
-        // --- RENDERIZAÇÃO DASHBOARD & RELATÓRIOS ---
         const updateUI = () => {
-            // Filtro duplo: Mês e Setor
-            const txFiltradas = transactions.filter(t => {
-                const matchMonth = t.date.startsWith(currentMonthFilter);
-                const matchSector = currentSectorFilter === 'Todos' || t.sector === currentSectorFilter;
-                return matchMonth && matchSector;
-            });
-
+            const txFiltradas = transactions.filter(t => t.date.startsWith(currentMonthFilter) && (currentSectorFilter === 'Todos' || t.sector === currentSectorFilter));
             let totRec = 0, totProd = 0, totDesp = 0;
             const resRec = {}, resProd = {}, resDesp = {};
             const htmlRec = [], htmlProd = [], htmlDesp = [], htmlDash = [];
 
             txFiltradas.forEach(t => {
-                const trBase = (color, categoryList) => `
-                    <tr class="hover:bg-dark-border/50">
-                        <td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td>
-                        <td class="px-6 py-3 font-medium text-white">${t.description}</td>
-                        <td class="px-6 py-3 text-gray-400">${t.sector || 'N/A'}</td>
-                        <td class="px-6 py-3 text-${color}-400">${t.category}</td>
-                        <td class="px-6 py-3 text-right font-bold text-${color}-400">${formatMoney(t.amount)}</td>
-                        <td class="px-6 py-3 text-center"><button onclick="deletarTransacao('${t.id}')" class="text-rose-400 hover:text-rose-300"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
-                    </tr>`;
-
-                if (t.type === 'income') {
-                    totRec += t.amount; resRec[t.category] = (resRec[t.category] || 0) + t.amount;
-                    htmlRec.push(trBase('emerald'));
-                } else if (t.type === 'product') {
-                    totProd += t.amount; resProd[t.category] = (resProd[t.category] || 0) + t.amount;
-                    htmlProd.push(trBase('indigo'));
-                } else if (t.type === 'expense') {
-                    totDesp += t.amount; resDesp[t.category] = (resDesp[t.category] || 0) + t.amount;
-                    htmlDesp.push(trBase('rose'));
-                }
+                const trBase = (color) => `<tr class="hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-${color}-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-${color}-400">${formatMoney(t.amount)}</td><td class="px-6 py-3 text-center"><button onclick="deletarTransacao('${t.id}')" class="text-rose-400 hover:text-rose-300"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`;
+                if (t.type === 'income') { totRec += t.amount; resRec[t.category] = (resRec[t.category] || 0) + t.amount; htmlRec.push(trBase('emerald')); }
+                else if (t.type === 'product') { totProd += t.amount; resProd[t.category] = (resProd[t.category] || 0) + t.amount; htmlProd.push(trBase('indigo')); }
+                else if (t.type === 'expense') { totDesp += t.amount; resDesp[t.category] = (resDesp[t.category] || 0) + t.amount; htmlDesp.push(trBase('rose')); }
             });
 
-            // Resumo Dash (Últimas 5 global)
             txFiltradas.slice(0, 8).forEach(t => {
                 const colors = { income: 'emerald', product: 'indigo', expense: 'rose' };
                 const c = colors[t.type];
                 const typeName = t.type === 'income' ? 'Sócio' : t.type === 'product' ? 'Produto' : 'Despesa';
-                htmlDash.push(`
-                    <tr class="border-b border-dark-border/50 last:border-0">
-                        <td class="px-4 py-3 text-gray-400 text-xs uppercase tracking-wider">${typeName}</td>
-                        <td class="px-4 py-3 font-medium text-white">${t.description}</td>
-                        <td class="px-4 py-3 text-gray-400">${t.category}</td>
-                        <td class="px-4 py-3 text-gray-400 text-xs">${t.sector || '-'}</td>
-                        <td class="px-4 py-3 text-right font-bold text-${c}-400">${formatMoney(t.amount)}</td>
-                    </tr>
-                `);
+                htmlDash.push(`<tr class="border-b border-dark-border/50 last:border-0"><td class="px-4 py-3 text-gray-400 text-xs uppercase">${typeName}</td><td class="px-4 py-3 font-medium text-white">${t.description}</td><td class="px-4 py-3 text-gray-400">${t.category}</td><td class="px-4 py-3 text-gray-400 text-xs">${t.sector || '-'}</td><td class="px-4 py-3 text-right font-bold text-${c}-400">${formatMoney(t.amount)}</td></tr>`);
             });
 
             const lucroLiquido = (totRec + totProd) - totDesp;
             const proLabore = lucroLiquido > 0 ? lucroLiquido / 2 : 0;
 
-            // Updates Tela
             document.getElementById('dash-faturamento-socios').textContent = formatMoney(totRec);
             document.getElementById('dash-faturamento-produtos').textContent = formatMoney(totProd);
             document.getElementById('dash-despesas').textContent = formatMoney(totDesp);
@@ -784,14 +706,13 @@
             document.getElementById('dash-socio1').textContent = formatMoney(proLabore);
             document.getElementById('dash-socio2').textContent = formatMoney(proLabore);
 
-            document.getElementById('dash-table-recentes').innerHTML = htmlDash.join('') || '<tr><td colspan="5" class="px-4 py-3 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
+            document.getElementById('dash-table-recentes').innerHTML = htmlDash.join('') || '<tr><td colspan="5" class="px-4 py-3 text-center text-gray-500">Vazio.</td></tr>';
             document.getElementById('lista-receitas').innerHTML = htmlRec.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
             document.getElementById('lista-produtos').innerHTML = htmlProd.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
             document.getElementById('lista-despesas').innerHTML = htmlDesp.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
 
-            // Relatório
             document.getElementById('rel-mes-texto').textContent = currentMonthFilter.split('-').reverse().join('/');
-            document.getElementById('rel-setor-texto').textContent = currentSectorFilter === 'Todos' ? 'Todos os Setores (Consolidado)' : currentSectorFilter;
+            document.getElementById('rel-setor-texto').textContent = currentSectorFilter === 'Todos' ? 'Todos os Setores' : currentSectorFilter;
             
             const renderResumo = (obj, idList, idTotal, totalVal) => {
                 let h = '';
@@ -811,29 +732,24 @@
             document.getElementById('rel-fim-lucro').textContent = formatMoney(lucroLiquido);
             document.getElementById('rel-socio1').textContent = formatMoney(proLabore);
             document.getElementById('rel-socio2').textContent = formatMoney(proLabore);
-
-            lucide.createIcons();
         };
 
-        // --- SUBMIT FORMS ---
         const handleFormSubmit = async (e, type, prefix) => {
             e.preventDefault();
             if (!currentUser) return;
-            if(!appSettings.sectors || appSettings.sectors.length === 0) {
-                alert("Por favor, adicione pelo menos um SETOR nas Configurações antes de registrar.");
-                return;
-            }
-
-            const desc = document.getElementById(`${prefix}-nome`)?.value || document.getElementById(`${prefix}-desc`)?.value;
-            const cat = document.getElementById(`${prefix}-categoria`).value;
-            const set = document.getElementById(`${prefix}-setor`).value;
-            const val = parseFloat(document.getElementById(`${prefix}-valor`).value);
             
-            if(!cat || !set) { alert("Categoria e Setor são obrigatórios."); return; }
+            const desc = document.getElementById(`${prefix}-nome`)?.value || document.getElementById(`${prefix}-desc`)?.value;
+            const catEl = document.getElementById(`${prefix}-categoria`);
+            const setEl = document.getElementById(`${prefix}-setor`);
+            
+            if(!catEl.value || !setEl.value) { 
+                alert("Por favor, selecione (ou crie usando o botão + Novo) a Categoria e o Setor."); 
+                return; 
+            }
 
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions'), {
-                    type: type, description: desc, category: cat, sector: set, amount: val,
+                    type: type, description: desc, category: catEl.value, sector: setEl.value, amount: parseFloat(document.getElementById(`${prefix}-valor`).value),
                     date: new Date().toISOString().split('T')[0], timestamp: Date.now()
                 });
                 e.target.reset();
@@ -845,12 +761,13 @@
         document.getElementById('form-despesa').addEventListener('submit', e => handleFormSubmit(e, 'expense', 'desp'));
 
         window.deletarTransacao = async (id) => {
-            if (currentUser && confirm('Apagar este registro?')) {
-                await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions', id));
-            }
+            if (currentUser && confirm('Apagar este registro?')) await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions', id));
         };
 
-        // --- CONFIGURAÇÕES DEDICADAS ---
+        const saveSettingsToFirebase = async () => {
+            await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'geral'), appSettings);
+        };
+
         window.salvarConfigGeral = async () => {
             if(!currentUser) return;
             appSettings.name = document.getElementById('conf-nome').value;
@@ -859,18 +776,45 @@
             alert("Dados salvos!");
         };
 
-        const saveSettingsToFirebase = async () => {
-            await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'geral'), appSettings);
+        // Função Global de Adição Rápida com Seleção Automática
+        window.quickAddConfig = async (listKey, promptText, selectId) => {
+            if(!currentUser) return;
+            const val = prompt(promptText);
+            if(val && val.trim() !== '') {
+                const item = val.trim();
+                if(!appSettings[listKey]) appSettings[listKey] = [];
+                
+                if(!appSettings[listKey].includes(item)) {
+                    appSettings[listKey].push(item);
+                    await saveSettingsToFirebase();
+                    
+                    // Tenta selecionar automaticamente o novo item no menu dropdown
+                    let tentativas = 0;
+                    let checkInterval = setInterval(() => {
+                        const el = document.getElementById(selectId);
+                        if(el && Array.from(el.options).some(opt => opt.value === item)) {
+                            el.value = item;
+                            clearInterval(checkInterval);
+                        }
+                        tentativas++;
+                        if(tentativas > 20) clearInterval(checkInterval); // Cancela após 2 segundos
+                    }, 100);
+
+                } else {
+                    alert('Esta opção já existe na lista.');
+                }
+            }
         };
 
         window.addConfigItem = async (listKey, inputId) => {
             const val = document.getElementById(inputId).value.trim();
-            if(!val) return;
-            if(!appSettings[listKey]) appSettings[listKey] = [];
-            if(!appSettings[listKey].includes(val)) {
-                appSettings[listKey].push(val);
-                document.getElementById(inputId).value = '';
-                await saveSettingsToFirebase();
+            if(val) {
+                if(!appSettings[listKey]) appSettings[listKey] = [];
+                if(!appSettings[listKey].includes(val)) {
+                    appSettings[listKey].push(val);
+                    document.getElementById(inputId).value = '';
+                    await saveSettingsToFirebase();
+                }
             }
         };
 
@@ -884,12 +828,7 @@
         const renderConfigLists = () => {
             const render = (listKey, elementId) => {
                 const arr = appSettings[listKey] || [];
-                document.getElementById(elementId).innerHTML = arr.map((item, idx) => `
-                    <li class="flex justify-between items-center bg-dark-bg px-3 py-2 rounded-lg border border-dark-border">
-                        <span class="text-gray-300 text-sm">${item}</span>
-                        <button onclick="remConfigItem('${listKey}', ${idx})" class="text-rose-400 hover:text-rose-500"><i data-lucide="x" class="w-4 h-4"></i></button>
-                    </li>
-                `).join('');
+                document.getElementById(elementId).innerHTML = arr.map((item, idx) => `<li class="flex justify-between items-center bg-dark-bg px-3 py-2 rounded-lg border border-dark-border"><span class="text-gray-300 text-sm">${item}</span><button onclick="remConfigItem('${listKey}', ${idx})" class="text-rose-400 hover:text-rose-500"><i data-lucide="x" class="w-4 h-4"></i></button></li>`).join('');
             };
             render('sectors', 'lista-conf-setores');
             render('catIncome', 'lista-conf-rec');
