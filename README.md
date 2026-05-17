@@ -142,18 +142,25 @@
                     <p id="club-header-name" class="text-sm text-brand-400 mt-1">Clube não definido</p>
                 </div>
                 
-                <div class="flex items-center gap-4 bg-dark-card p-2 rounded-xl border border-dark-border">
-                    <div class="flex items-center gap-2 px-3 border-r border-dark-border">
-                        <i data-lucide="calendar" class="w-4 h-4 text-gray-400"></i>
-                        <input type="month" id="filtro-mes" class="bg-transparent text-white font-medium focus:outline-none cursor-pointer">
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-4 bg-dark-card p-2 rounded-xl border border-dark-border">
+                        <div class="flex items-center gap-2 px-3 border-r border-dark-border">
+                            <i data-lucide="calendar" class="w-4 h-4 text-gray-400"></i>
+                            <input type="month" id="filtro-mes" class="bg-transparent text-white font-medium focus:outline-none cursor-pointer">
+                        </div>
+                        <div class="flex items-center gap-2 px-3">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-gray-400"></i>
+                            <select id="filtro-setor-global" class="bg-transparent text-white font-medium focus:outline-none cursor-pointer">
+                                <option value="Todos">Todos os Setores</option>
+                                <!-- Preenchido via JS -->
+                            </select>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-2 px-3">
-                        <i data-lucide="map-pin" class="w-4 h-4 text-gray-400"></i>
-                        <select id="filtro-setor-global" class="bg-transparent text-white font-medium focus:outline-none cursor-pointer">
-                            <option value="Todos">Todos os Setores</option>
-                            <!-- Preenchido via JS -->
-                        </select>
-                    </div>
+                    
+                    <!-- Novo botão de Sair no cabeçalho -->
+                    <button id="btn-logout-header" title="Sair da Conta" class="bg-dark-card border border-dark-border p-2.5 rounded-xl text-rose-400 hover:bg-rose-500 hover:text-white transition-colors shadow-sm flex items-center justify-center">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                    </button>
                 </div>
             </header>
 
@@ -614,6 +621,7 @@
         });
 
         document.getElementById('btn-logout').addEventListener('click', async () => { await signOut(auth); window.location.reload(); });
+        document.getElementById('btn-logout-header').addEventListener('click', async () => { await signOut(auth); window.location.reload(); });
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
