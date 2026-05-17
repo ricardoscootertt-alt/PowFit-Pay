@@ -19,13 +19,26 @@
     </script>
     <style>
         :root { color-scheme: dark; }
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        
+        /* Forçar modo dark até na hora de gerar o PDF/Imprimir */
         @media print {
-            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body { 
+                background-color: #0f172a !important; 
+                color: #e2e8f0 !important;
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important; 
+            }
             .no-print { display: none !important; }
-            .print-container { width: 100% !important; margin: 0 !important; padding: 0 !important; }
+            .print-container { width: 100% !important; margin: 0 !important; padding: 0 !important; background-color: #0f172a !important; }
+            .bg-dark-card { background-color: #1e293b !important; border-color: #334155 !important; }
+            .bg-dark-bg { background-color: #0f172a !important; }
             * { box-shadow: none !important; }
+            table, thead, tbody, tr, th, td { border-color: #334155 !important; background-color: transparent !important; color: inherit !important; }
+            thead { background-color: #0f172a !important; }
+            tbody tr { background-color: #1e293b !important; }
         }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -36,7 +49,7 @@
 <body class="bg-dark-bg text-gray-200 min-h-screen flex antialiased">
 
     <!-- MODAL DARK DE CONFIRMAÇÃO (Para excluir ou alertas) -->
-    <div id="custom-confirm-modal" class="hidden fixed inset-0 bg-dark-bg/80 backdrop-blur-sm z-50 flex items-center justify-center transition-opacity duration-300">
+    <div id="custom-confirm-modal" class="hidden fixed inset-0 bg-dark-bg/90 backdrop-blur-sm z-50 flex items-center justify-center transition-opacity duration-300">
         <div class="bg-dark-card p-6 rounded-2xl shadow-2xl border border-dark-border max-w-sm w-full mx-4">
             <h3 id="custom-confirm-title" class="text-lg font-bold text-white mb-2">Confirmar</h3>
             <p id="custom-confirm-msg" class="text-gray-400 mb-6 text-sm">Tem certeza disso?</p>
@@ -48,7 +61,7 @@
     </div>
 
     <!-- MODAL DARK DE PROMPT (Para criar categorias/setores) -->
-    <div id="custom-prompt-modal" class="hidden fixed inset-0 bg-dark-bg/80 backdrop-blur-sm z-50 flex items-center justify-center transition-opacity duration-300">
+    <div id="custom-prompt-modal" class="hidden fixed inset-0 bg-dark-bg/90 backdrop-blur-sm z-50 flex items-center justify-center transition-opacity duration-300">
         <div class="bg-dark-card p-6 rounded-2xl shadow-2xl border border-dark-border max-w-sm w-full mx-4">
             <h3 id="custom-prompt-title" class="text-lg font-bold text-white mb-4">Digite o valor:</h3>
             <input type="text" id="custom-prompt-input" class="w-full bg-dark-bg border border-dark-border text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none mb-6" placeholder="...">
@@ -70,7 +83,7 @@
             <h1 class="text-3xl font-bold text-white mb-2">PowFit Pay</h1>
             <p class="text-gray-400 mb-8">Gestão Financeira para Clubes.</p>
             
-            <button id="btn-google-login" class="w-full flex items-center justify-center gap-3 bg-white text-gray-900 font-semibold py-3 px-4 rounded-xl hover:bg-gray-100 transition-colors shadow-md">
+            <button id="btn-google-login" class="w-full flex items-center justify-center gap-3 bg-dark-bg border border-dark-border text-white font-semibold py-3 px-4 rounded-xl hover:bg-dark-border transition-colors shadow-md">
                 <svg class="w-5 h-5" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -241,18 +254,18 @@
 
                 <div class="bg-dark-card rounded-2xl border border-dark-border p-6">
                     <h3 class="text-lg font-bold text-white mb-4">Transações Recentes</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs text-gray-400 uppercase bg-dark-bg rounded-lg">
+                    <div class="overflow-x-auto bg-dark-bg rounded-lg border border-dark-border">
+                        <table class="w-full text-sm text-left text-gray-200">
+                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
                                 <tr>
-                                    <th class="px-4 py-3 rounded-l-lg">Tipo</th>
+                                    <th class="px-4 py-3 rounded-tl-lg">Tipo</th>
                                     <th class="px-4 py-3">Descrição</th>
                                     <th class="px-4 py-3">Categoria</th>
                                     <th class="px-4 py-3">Setor</th>
-                                    <th class="px-4 py-3 rounded-r-lg text-right">Valor Final</th>
+                                    <th class="px-4 py-3 rounded-tr-lg text-right">Valor Final</th>
                                 </tr>
                             </thead>
-                            <tbody id="dash-table-recentes" class="divide-y divide-dark-border"></tbody>
+                            <tbody id="dash-table-recentes" class="divide-y divide-dark-border bg-dark-bg"></tbody>
                         </table>
                     </div>
                 </div>
@@ -298,13 +311,13 @@
                 </div>
 
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Mensalidades do Mês</h3></div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs text-gray-400 uppercase bg-dark-bg">
+                    <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Mensalidades do Mês</h3></div>
+                    <div class="overflow-x-auto bg-dark-bg">
+                        <table class="w-full text-sm text-left text-gray-200">
+                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
                                 <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Sócio</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ações</th></tr>
                             </thead>
-                            <tbody id="lista-receitas" class="divide-y divide-dark-border"></tbody>
+                            <tbody id="lista-receitas" class="divide-y divide-dark-border bg-dark-bg"></tbody>
                         </table>
                     </div>
                 </div>
@@ -354,10 +367,10 @@
                 </div>
                 
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Vendas do Mês</h3></div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs text-gray-400 uppercase bg-dark-bg">
+                    <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Vendas do Mês</h3></div>
+                    <div class="overflow-x-auto bg-dark-bg">
+                        <table class="w-full text-sm text-left text-gray-200">
+                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
                                 <tr>
                                     <th class="px-6 py-3">Data</th>
                                     <th class="px-6 py-3">Produto</th>
@@ -369,7 +382,7 @@
                                     <th class="px-6 py-3 text-center">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="lista-produtos" class="divide-y divide-dark-border"></tbody>
+                            <tbody id="lista-produtos" class="divide-y divide-dark-border bg-dark-bg"></tbody>
                         </table>
                     </div>
                 </div>
@@ -414,13 +427,13 @@
                     </form>
                 </div>
                 <div class="bg-dark-card rounded-2xl border border-dark-border overflow-hidden">
-                    <div class="p-4 border-b border-dark-border"><h3 class="font-bold text-white">Gastos do Mês</h3></div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs text-gray-400 uppercase bg-dark-bg">
+                    <div class="p-4 border-b border-dark-border bg-dark-card"><h3 class="font-bold text-white">Gastos do Mês</h3></div>
+                    <div class="overflow-x-auto bg-dark-bg">
+                        <table class="w-full text-sm text-left text-gray-200">
+                            <thead class="text-xs text-gray-400 uppercase bg-dark-card border-b border-dark-border">
                                 <tr><th class="px-6 py-3">Data</th><th class="px-6 py-3">Descrição</th><th class="px-6 py-3">Setor</th><th class="px-6 py-3">Categoria</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3 text-center">Ações</th></tr>
                             </thead>
-                            <tbody id="lista-despesas" class="divide-y divide-dark-border"></tbody>
+                            <tbody id="lista-despesas" class="divide-y divide-dark-border bg-dark-bg"></tbody>
                         </table>
                     </div>
                 </div>
@@ -434,7 +447,7 @@
                     </button>
                 </div>
 
-                <div class="bg-dark-card rounded-2xl border border-dark-border p-8 print:border-none print:shadow-none" id="print-area">
+                <div class="bg-dark-card rounded-2xl border border-dark-border p-8" id="print-area">
                     <div class="text-center mb-8 border-b border-dark-border pb-6">
                         <h2 id="rel-club-name" class="text-3xl font-bold text-white uppercase">NOME DO CLUBE</h2>
                         <p id="rel-club-cnpj" class="text-gray-400 mt-1">CNPJ: 00.000.000/0000-00</p>
@@ -792,19 +805,20 @@
                         <button onclick="deletarTransacao('${t.id}')" class="text-rose-400 hover:text-rose-300 p-1" title="Excluir"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>`;
 
+                // Forçando class "bg-dark-card" direto em cada TR para que navegadores mobiles não coloquem fundo branco.
                 if (t.type === 'income') { 
                     totRec += t.amount; resRec[t.category] = (resRec[t.category] || 0) + t.amount; 
-                    htmlRec.push(`<tr class="hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-emerald-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
+                    htmlRec.push(`<tr class="bg-dark-card hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-emerald-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
                 }
                 else if (t.type === 'product') { 
                     const custo = t.costAmount || 0; const lucroItem = t.amount - custo;
                     totProdVenda += t.amount; totProdCusto += custo;
                     resProd[t.category] = (resProd[t.category] || 0) + t.amount; 
-                    htmlProd.push(`<tr class="hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-indigo-400">${t.category}</td><td class="px-6 py-3 text-right text-rose-400">${formatMoney(custo)}</td><td class="px-6 py-3 text-right font-bold text-indigo-400">${formatMoney(t.amount)}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(lucroItem)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
+                    htmlProd.push(`<tr class="bg-dark-card hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-indigo-400">${t.category}</td><td class="px-6 py-3 text-right text-rose-400">${formatMoney(custo)}</td><td class="px-6 py-3 text-right font-bold text-indigo-400">${formatMoney(t.amount)}</td><td class="px-6 py-3 text-right font-bold text-emerald-400">${formatMoney(lucroItem)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
                 }
                 else if (t.type === 'expense') { 
                     totDesp += t.amount; resDesp[t.category] = (resDesp[t.category] || 0) + t.amount; 
-                    htmlDesp.push(`<tr class="hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-rose-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-rose-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
+                    htmlDesp.push(`<tr class="bg-dark-card hover:bg-dark-border/50"><td class="px-6 py-3 text-gray-400 whitespace-nowrap">${formatDate(t.date)}</td><td class="px-6 py-3 font-medium text-white">${t.description}</td><td class="px-6 py-3 text-gray-400">${t.sector || '-'}</td><td class="px-6 py-3 text-rose-400">${t.category}</td><td class="px-6 py-3 text-right font-bold text-rose-400">${formatMoney(t.amount)}</td><td class="px-6 py-3">${actionButtons}</td></tr>`); 
                 }
             });
 
@@ -812,7 +826,7 @@
                 const colors = { income: 'emerald', product: 'indigo', expense: 'rose' };
                 const c = colors[t.type];
                 const typeName = t.type === 'income' ? 'Sócio' : t.type === 'product' ? 'Produto' : 'Despesa';
-                htmlDash.push(`<tr class="border-b border-dark-border/50 last:border-0"><td class="px-4 py-3 text-gray-400 text-xs uppercase">${typeName}</td><td class="px-4 py-3 font-medium text-white">${t.description}</td><td class="px-4 py-3 text-gray-400">${t.category}</td><td class="px-4 py-3 text-gray-400 text-xs">${t.sector || '-'}</td><td class="px-4 py-3 text-right font-bold text-${c}-400">${formatMoney(t.amount)}</td></tr>`);
+                htmlDash.push(`<tr class="bg-dark-bg border-b border-dark-border/50 last:border-0"><td class="px-4 py-3 text-gray-400 text-xs uppercase">${typeName}</td><td class="px-4 py-3 font-medium text-white">${t.description}</td><td class="px-4 py-3 text-gray-400">${t.category}</td><td class="px-4 py-3 text-gray-400 text-xs">${t.sector || '-'}</td><td class="px-4 py-3 text-right font-bold text-${c}-400">${formatMoney(t.amount)}</td></tr>`);
             });
 
             const faturamentoBruto = totRec + totProdVenda;
@@ -828,18 +842,19 @@
             document.getElementById('dash-socio1').textContent = formatMoney(proLabore);
             document.getElementById('dash-socio2').textContent = formatMoney(proLabore);
 
-            document.getElementById('dash-table-recentes').innerHTML = htmlDash.join('') || '<tr><td colspan="5" class="px-4 py-3 text-center text-gray-500">Vazio.</td></tr>';
-            document.getElementById('lista-receitas').innerHTML = htmlRec.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
-            document.getElementById('lista-produtos').innerHTML = htmlProd.join('') || '<tr><td colspan="8" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
-            document.getElementById('lista-despesas').innerHTML = htmlDesp.join('') || '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Vazio.</td></tr>';
+            // Respostas de tabelas vazias forçando bg dark
+            document.getElementById('dash-table-recentes').innerHTML = htmlDash.join('') || '<tr class="bg-dark-bg"><td colspan="5" class="px-4 py-3 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
+            document.getElementById('lista-receitas').innerHTML = htmlRec.join('') || '<tr class="bg-dark-card"><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
+            document.getElementById('lista-produtos').innerHTML = htmlProd.join('') || '<tr class="bg-dark-card"><td colspan="8" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
+            document.getElementById('lista-despesas').innerHTML = htmlDesp.join('') || '<tr class="bg-dark-card"><td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>';
 
             document.getElementById('rel-mes-texto').textContent = currentMonthFilter.split('-').reverse().join('/');
             document.getElementById('rel-setor-texto').textContent = currentSectorFilter === 'Todos' ? 'Todos os Setores' : currentSectorFilter;
             
             const renderResumo = (obj, idList, idTotal, totalVal) => {
                 let h = '';
-                for(let k in obj) h += `<li class="flex justify-between border-b border-dark-border/30 pb-1"><span>${k}</span> <strong>${formatMoney(obj[k])}</strong></li>`;
-                document.getElementById(idList).innerHTML = h || '<li>Sem dados</li>';
+                for(let k in obj) h += `<li class="flex justify-between border-b border-dark-border/30 pb-1 text-gray-200"><span>${k}</span> <strong>${formatMoney(obj[k])}</strong></li>`;
+                document.getElementById(idList).innerHTML = h || '<li class="text-gray-400">Sem dados</li>';
                 document.getElementById(idTotal).textContent = formatMoney(totalVal);
             };
 
@@ -888,12 +903,10 @@
 
             try {
                 if (idToEdit) {
-                    // Update
                     const ref = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions', idToEdit);
                     await updateDoc(ref, payload);
-                    cancelEdit(prefix); // Reseta o form para estado de adição
+                    cancelEdit(prefix); 
                 } else {
-                    // Adicionar Novo
                     payload.date = new Date().toISOString().split('T')[0];
                     payload.timestamp = Date.now();
                     await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions'), payload);
@@ -906,7 +919,6 @@
         document.getElementById('form-produto').addEventListener('submit', e => handleFormSubmit(e, 'product', 'prod'));
         document.getElementById('form-despesa').addEventListener('submit', e => handleFormSubmit(e, 'expense', 'desp'));
 
-        // --- SISTEMA DE EDIÇÃO ---
         window.editarTransacao = (id) => {
             const t = transactions.find(x => x.id === id);
             if(!t) return;
@@ -916,14 +928,12 @@
             else if(t.type === 'product') prefix = 'prod';
             else if(t.type === 'expense') prefix = 'desp';
 
-            // Muda o formulário visualmente
             document.getElementById(`${prefix}-form-title`).innerHTML = `<span class="text-blue-400">Editando Registro</span>`;
             document.getElementById(`btn-cancel-edit-${prefix}`).classList.remove('hidden');
             const btnSubmit = document.getElementById(`btn-submit-${prefix}`);
             btnSubmit.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i> Atualizar`;
             btnSubmit.className = "w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg";
 
-            // Preenche dados
             document.getElementById(`${prefix}-id`).value = t.id;
             const descEl = document.getElementById(`${prefix}-nome`) || document.getElementById(`${prefix}-desc`);
             descEl.value = t.description;
@@ -936,7 +946,6 @@
             }
 
             lucide.createIcons();
-            // Rola a tela suavemente para o formulário
             document.getElementById(`sec-${prefix === 'rec' ? 'receitas' : prefix === 'prod' ? 'produtos' : 'despesas'}`).scrollIntoView({ behavior: 'smooth' });
         };
 
@@ -964,8 +973,6 @@
                 await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'transactions', id));
             }
         };
-
-        // --- FIM SISTEMA DE EDIÇÃO ---
 
         const saveSettingsToFirebase = async () => {
             await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'geral'), appSettings);
